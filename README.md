@@ -1,5 +1,3 @@
-# chai-webdriver [![Build Status](https://travis-ci.org/goodeggs/chai-webdriver.png)](https://travis-ci.org/goodeggs/chai-webdriver) [![Dependency Status](https://david-dm.org/goodeggs/chai-webdriver.png)](https://david-dm.org/goodeggs/chai-webdriver) [![NPM version](https://badge.fury.io/js/chai-webdriver.png)](http://badge.fury.io/js/chai-webdriver)
-
 Provides [selenium-webdriver](https://npmjs.org/package/selenium-webdriver) sugar for the [Chai](http://chaijs.com/) assertion library. Allows you to create expressive integration tests:
 
 ```javascript
@@ -37,6 +35,10 @@ You can also always add a `not` in there to negate the assertion:
 
 - `expect(selector).dom.not.to.have.style('property', 'value')`
 
+You can also add an `eventually` to tell `chai-webdriver` to poll for the selected elements up to the given timeout:
+
+- `expect(selector).dom.to.eventually.have.htmlClass('warning')`
+
 ## Setup
 
 Setup is pretty easy. Just:
@@ -48,11 +50,12 @@ var sw = require('selenium-webdriver');
 var driver = new sw.Builder()
   .withCapabilities(sw.Capabilities.chrome())
   .build()
+var timeout = 15000; //optional timeout in ms to use with eventually (defaults to 9000)
 
 // And then...
 var chai = require('chai');
 var chaiWebdriver = require('chai-webdriver');
-chai.use(chaiWebdriver(driver));
+chai.use(chaiWebdriver(driver, timeout));
 
 // And you're good to go!
 driver.get('http://github.com');
@@ -65,7 +68,6 @@ so easy.
 
 ```bash
 npm install           # download the neccesary development dependencies
-npm run-script build  # compile coffee-script into javascript
 npm test              # build and run the specs
 ```
 
