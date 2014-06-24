@@ -67,8 +67,8 @@ chai.expect('#site-container h1.heading').dom.to.not.contain.text("I'm a kitty!"
 so easy.
 
 ```bash
-npm install           # download the neccesary development dependencies
-npm test              # build and run the specs
+$EDITOR index.js      # edit index.js
+npm test              # run the specs
 ```
 
 ## License
