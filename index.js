@@ -7,7 +7,7 @@ var Q = require('q');
 module.exports = chaiWebdriver = function(driver, timeout) {
   var $ = sizzle(driver);
 
-  timeout = timeout || 9000;
+  timeout = timeout || 1000;
 
   return function(chai, utils) {
     var selectAll = function(selector, eventually) {

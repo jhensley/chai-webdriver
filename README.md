@@ -50,7 +50,7 @@ var sw = require('selenium-webdriver');
 var driver = new sw.Builder()
   .withCapabilities(sw.Capabilities.chrome())
   .build()
-var timeout = 15000; //optional timeout in ms to use with eventually (defaults to 9000)
+var timeout = 15000; //optional timeout in ms to use with eventually (defaults to 1000)
 
 // And then...
 var chai = require('chai');
