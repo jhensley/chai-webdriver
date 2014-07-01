@@ -111,7 +111,19 @@ module.exports = chaiWebdriver = function(driver, timeout) {
       var assertDisplayed = function() {
         return select(self._obj, utils.flag(self, 'eventually')).then(function(obj) {
           return obj.el.isDisplayed().then(function(visible) {
-            return assert(visible);
+            //selenium may say it's visible even though it's off-screen
+            if (visible) {
+              return driver.manage().window().getSize().then(function(winSize) {
+                return obj.el.getSize().then(function(size) {
+                  return obj.el.getLocation().then(function(loc) {
+                    return assert(loc.x > -size.width && loc.y > -size.height && loc.y < winSize.height && loc.x < winSize.width);
+                  });
+                });
+              });
+            }
+            else {
+              return assert(visible);
+            }
           });
         });
       };
