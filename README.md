@@ -39,6 +39,8 @@ You can also add an `eventually` to tell `chai-webdriver` to poll for the select
 
 - `expect(selector).dom.to.eventually.have.htmlClass('warning')`
 
+All of these assertions return a `Q` promise.
+
 ## Setup
 
 Setup is pretty easy. Just:
