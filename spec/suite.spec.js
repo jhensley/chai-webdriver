@@ -18,6 +18,12 @@ var url = function(page) {
   return "file://" + (path.join(__dirname, page));
 };
 
+before(function(done) {
+  return driver.manage().window().setSize(1024, 768).then(function() {
+    return done();
+  });
+});
+
 after(function(done) {
   return driver.quit().then(function() {
     return done();
@@ -33,27 +39,27 @@ describe('the basics', function() {
   });
   describe('#text', function() {
     it('verifies that an element has exact text', function(done) {
-      return expect('h1').dom.to.have.text("The following text is an excerpt from Finnegan's Wake by James Joyce", done);
+      return expect('#finnegan-header').dom.to.have.text("The following text is an excerpt from Finnegan's Wake by James Joyce", done);
     });
     return it('verifies that an element does not have exact text', function(done) {
-      return expect('h1').dom.not.to.have.text("Wake", done);
+      return expect('#finnegan-header').dom.not.to.have.text("Wake", done);
     });
   });
   describe('#text (regexp version)', function() {
     it('verifies that an element has a regexp match', function(done) {
-      return expect('h1').dom.to.have.text(/following.*excerpt/, done);
+      return expect('#finnegan-header').dom.to.have.text(/following.*excerpt/, done);
     });
     return it('verifies that an element does not match the regexp', function(done) {
-      return expect('h1').dom.not.to.have.text(/following.*food/, done);
+      return expect('#finnegan-header').dom.not.to.have.text(/following.*food/, done);
     });
   });
   describe('#contain', function() {
     describe('on a dom element', function() {
       it('verifies that an element contains text', function(done) {
-        return expect('h1').dom.to.contain.text("Finnegan", done);
+        return expect('#finnegan-header').dom.to.contain.text("Finnegan", done);
       });
       return it('verifies that an element does not contain text', function(done) {
-        return expect('h1').dom.not.to.contain.text("Bibimbap", done);
+        return expect('#finnegan-header').dom.not.to.contain.text("Bibimbap", done);
       });
     });
     return describe('not on a dom element', function() {
@@ -67,10 +73,10 @@ describe('the basics', function() {
   });
   describe('#match', function() {
     it('verifies that an element has a regexp match', function(done) {
-      return expect('h1').dom.to.match(/following.*excerpt/, done);
+      return expect('#finnegan-header').dom.to.match(/following.*excerpt/, done);
     });
     it('verifies that an element does not match the regexp', function(done) {
-      return expect('h1').dom.not.to.match(/following.*food/, done);
+      return expect('#finnegan-header').dom.not.to.match(/following.*food/, done);
     });
     return describe('not on a dom element', function() {
       it('verifies that a string does match the regexp', function() {
@@ -160,27 +166,27 @@ describe('the basics with eventually', function() {
   });
   describe('#text', function() {
     it('verifies that an element has exact text', function(done) {
-      return expect('h1').dom.to.eventually.have.text("The following text is an excerpt from Finnegan's Wake by James Joyce", done);
+      return expect('#finnegan-header').dom.to.eventually.have.text("The following text is an excerpt from Finnegan's Wake by James Joyce", done);
     });
     return it('verifies that an element does not have exact text', function(done) {
-      return expect('h1').dom.not.to.eventually.have.text("Wake", done);
+      return expect('#finnegan-header').dom.not.to.eventually.have.text("Wake", done);
     });
   });
   describe('#text (regexp version)', function() {
     it('verifies that an element has a regexp match', function(done) {
-      return expect('h1').dom.to.eventually.have.text(/following.*excerpt/, done);
+      return expect('#finnegan-header').dom.to.eventually.have.text(/following.*excerpt/, done);
     });
     return it('verifies that an element does not match the regexp', function(done) {
-      return expect('h1').dom.not.to.eventually.have.text(/following.*food/, done);
+      return expect('#finnegan-header').dom.not.to.eventually.have.text(/following.*food/, done);
     });
   });
   describe('#contain', function() {
     describe('on a dom element', function() {
       it('verifies that an element contains text', function(done) {
-        return expect('h1').dom.to.eventually.contain.text("Finnegan", done);
+        return expect('#finnegan-header').dom.to.eventually.contain.text("Finnegan", done);
       });
       return it('verifies that an element does not contain text', function(done) {
-        return expect('h1').dom.not.to.eventually.contain.text("Bibimbap", done);
+        return expect('#finnegan-header').dom.not.to.eventually.contain.text("Bibimbap", done);
       });
     });
     return describe('not on a dom element', function() {
@@ -194,10 +200,10 @@ describe('the basics with eventually', function() {
   });
   describe('#match', function() {
     it('verifies that an element has a regexp match', function(done) {
-      return expect('h1').dom.to.eventually.match(/following.*excerpt/, done);
+      return expect('#finnegan-header').dom.to.eventually.match(/following.*excerpt/, done);
     });
     it('verifies that an element does not match the regexp', function(done) {
-      return expect('h1').dom.not.to.eventually.match(/following.*food/, done);
+      return expect('#finnegan-header').dom.not.to.eventually.match(/following.*food/, done);
     });
     return describe('not on a dom element', function() {
       it('verifies that a string does match the regexp', function() {
