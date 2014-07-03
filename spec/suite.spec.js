@@ -41,7 +41,7 @@ describe('the basics', function() {
     it('verifies that an element has exact text', function(done) {
       return expect('#finnegan-header').dom.to.have.text("The following text is an excerpt from Finnegan's Wake by James Joyce", done);
     });
-    return it('verifies that an element does not have exact text', function(done) {
+    it('verifies that an element does not have exact text', function(done) {
       return expect('#finnegan-header').dom.not.to.have.text("Wake", done);
     });
   });
@@ -49,7 +49,7 @@ describe('the basics', function() {
     it('verifies that an element has a regexp match', function(done) {
       return expect('#finnegan-header').dom.to.have.text(/following.*excerpt/, done);
     });
-    return it('verifies that an element does not match the regexp', function(done) {
+    it('verifies that an element does not match the regexp', function(done) {
       return expect('#finnegan-header').dom.not.to.have.text(/following.*food/, done);
     });
   });
@@ -62,11 +62,11 @@ describe('the basics', function() {
         return expect('#finnegan-header').dom.not.to.contain.text("Bibimbap", done);
       });
     });
-    return describe('not on a dom element', function() {
+    describe('not on a dom element', function() {
       it('verifies that a string contains text', function() {
         return expect('John Finnegan').to.contain("Finnegan");
       });
-      return it('verifies that a string does not contain text', function() {
+      it('verifies that a string does not contain text', function() {
         return expect('John Finnegan').dom.not.to.contain("Bibimbap");
       });
     });
@@ -78,11 +78,11 @@ describe('the basics', function() {
     it('verifies that an element does not match the regexp', function(done) {
       return expect('#finnegan-header').dom.not.to.match(/following.*food/, done);
     });
-    return describe('not on a dom element', function() {
+    describe('not on a dom element', function() {
       it('verifies that a string does match the regexp', function() {
         return expect('some test text').to.match(/test/);
       });
-      return it('verifies that a string does not match the regexp', function() {
+      it('verifies that a string does not match the regexp', function() {
         return expect('some test text').not.to.match(/taste/);
       });
     });
@@ -94,7 +94,7 @@ describe('the basics', function() {
     it('verifies that a non-existing element is not visible', function(done) {
       return expect('.does-not-exist').dom.not.to.be.visible(done);
     });
-    return it('verifies that a hidden element is not visible', function(done) {
+    it('verifies that a hidden element is not visible', function(done) {
       return expect('.exists-but-hidden').dom.not.to.be.visible(done);
     });
   });
@@ -102,7 +102,7 @@ describe('the basics', function() {
     it('verifies that an element appears thrice', function(done) {
       return expect('input').dom.to.have.count(3, done);
     });
-    return it('verifies that a non-existing element has a count of 0', function(done) {
+    it('verifies that a non-existing element has a count of 0', function(done) {
       return expect('.does-not-exist').dom.to.have.count(0, done);
     });
   });
@@ -110,7 +110,7 @@ describe('the basics', function() {
     it('verifies that an element has a red background', function(done) {
       return expect('.red-bg').dom.to.have.style('background-color', 'rgba(255, 0, 0, 1)', done);
     });
-    return it('verifies that an element does not have a red background', function(done) {
+    it('verifies that an element does not have a red background', function(done) {
       return expect('.green-text').dom.to.have.style('background-color', 'rgba(0, 0, 0, 0)', done);
     });
   });
@@ -118,7 +118,7 @@ describe('the basics', function() {
     it('verifies that a text field has a specific value', function(done) {
       return expect('.does-exist').dom.to.have.value('People put stuff here', done);
     });
-    return it('verifies that a text field does not have a specific value', function(done) {
+    it('verifies that a text field does not have a specific value', function(done) {
       return expect('.does-exist').dom.not.to.have.value('Beep boop', done);
     });
   });
@@ -126,7 +126,7 @@ describe('the basics', function() {
     it('verifies that an input is disabled', function(done) {
       return expect('.i-am-disabled').dom.to.be.disabled(done);
     });
-    return it('verifies that an input is not disabled', function(done) {
+    it('verifies that an input is not disabled', function(done) {
       return expect('.does-exist').dom.not.to.be.disabled(done);
     });
   });
@@ -134,11 +134,11 @@ describe('the basics', function() {
     it('verifies that an element has a given class', function(done) {
       return expect('.does-exist').dom.to.have.htmlClass('second-class', done);
     });
-    return it('verifies than an element does not have a given class', function(done) {
+    it('verifies than an element does not have a given class', function(done) {
       return expect('.green-text').dom.not.to.have.htmlClass('second-class', done);
     });
   });
-  return describe('attribute', function() {
+  describe('attribute', function() {
     it('verifies that an element attribute has a given value', function(done) {
       return expect('input.does-exist').dom.to.have.attribute('value', 'People put stuff here', done);
     });
@@ -151,7 +151,7 @@ describe('the basics', function() {
     it('verifies that an attribute exists', function(done) {
       return expect('input.does-exist').dom.to.have.attribute('type', done);
     });
-    return it('verifies that an empty attribute exists', function(done) {
+    it('verifies that an empty attribute exists', function(done) {
       return expect('input.does-exist').dom.to.have.attribute('empty', done);
     });
   });
@@ -168,7 +168,7 @@ describe('the basics with eventually', function() {
     it('verifies that an element has exact text', function(done) {
       return expect('#finnegan-header').dom.to.eventually.have.text("The following text is an excerpt from Finnegan's Wake by James Joyce", done);
     });
-    return it('verifies that an element does not have exact text', function(done) {
+    it('verifies that an element does not have exact text', function(done) {
       return expect('#finnegan-header').dom.not.to.eventually.have.text("Wake", done);
     });
   });
@@ -176,7 +176,7 @@ describe('the basics with eventually', function() {
     it('verifies that an element has a regexp match', function(done) {
       return expect('#finnegan-header').dom.to.eventually.have.text(/following.*excerpt/, done);
     });
-    return it('verifies that an element does not match the regexp', function(done) {
+    it('verifies that an element does not match the regexp', function(done) {
       return expect('#finnegan-header').dom.not.to.eventually.have.text(/following.*food/, done);
     });
   });
@@ -185,15 +185,15 @@ describe('the basics with eventually', function() {
       it('verifies that an element contains text', function(done) {
         return expect('#finnegan-header').dom.to.eventually.contain.text("Finnegan", done);
       });
-      return it('verifies that an element does not contain text', function(done) {
+      it('verifies that an element does not contain text', function(done) {
         return expect('#finnegan-header').dom.not.to.eventually.contain.text("Bibimbap", done);
       });
     });
-    return describe('not on a dom element', function() {
+    describe('not on a dom element', function() {
       it('verifies that a string contains text', function() {
         return expect('John Finnegan').to.eventually.contain("Finnegan");
       });
-      return it('verifies that a string does not contain text', function() {
+      it('verifies that a string does not contain text', function() {
         return expect('John Finnegan').dom.not.to.eventually.contain("Bibimbap");
       });
     });
@@ -205,11 +205,11 @@ describe('the basics with eventually', function() {
     it('verifies that an element does not match the regexp', function(done) {
       return expect('#finnegan-header').dom.not.to.eventually.match(/following.*food/, done);
     });
-    return describe('not on a dom element', function() {
+    describe('not on a dom element', function() {
       it('verifies that a string does match the regexp', function() {
         return expect('some test text').to.eventually.match(/test/);
       });
-      return it('verifies that a string does not match the regexp', function() {
+      it('verifies that a string does not match the regexp', function() {
         return expect('some test text').not.to.eventually.match(/taste/);
       });
     });
@@ -221,7 +221,7 @@ describe('the basics with eventually', function() {
     it('verifies that a non-existing element is not visible', function(done) {
       return expect('.does-not-exist').dom.not.to.eventually.be.visible(done);
     });
-    return it('verifies that a hidden element is not visible', function(done) {
+    it('verifies that a hidden element is not visible', function(done) {
       return expect('.exists-but-hidden').dom.not.to.eventually.be.visible(done);
     });
   });
@@ -229,7 +229,7 @@ describe('the basics with eventually', function() {
     it('verifies that an element appears thrice', function(done) {
       return expect('input').dom.to.eventually.have.count(3, done);
     });
-    return it('verifies that a non-existing element has a count of 0', function(done) {
+    it('verifies that a non-existing element has a count of 0', function(done) {
       return expect('.does-not-exist').dom.to.eventually.have.count(0, done);
     });
   });
@@ -237,7 +237,7 @@ describe('the basics with eventually', function() {
     it('verifies that an element has a red background', function(done) {
       return expect('.red-bg').dom.to.eventually.have.style('background-color', 'rgba(255, 0, 0, 1)', done);
     });
-    return it('verifies that an element does not have a red background', function(done) {
+    it('verifies that an element does not have a red background', function(done) {
       return expect('.green-text').dom.to.eventually.have.style('background-color', 'rgba(0, 0, 0, 0)', done);
     });
   });
@@ -245,7 +245,7 @@ describe('the basics with eventually', function() {
     it('verifies that a text field has a specific value', function(done) {
       return expect('.does-exist').dom.to.eventually.have.value('People put stuff here', done);
     });
-    return it('verifies that a text field does not have a specific value', function(done) {
+    it('verifies that a text field does not have a specific value', function(done) {
       return expect('.does-exist').dom.not.to.eventually.have.value('Beep boop', done);
     });
   });
@@ -253,7 +253,7 @@ describe('the basics with eventually', function() {
     it('verifies that an input is disabled', function(done) {
       return expect('.i-am-disabled').dom.to.eventually.be.disabled(done);
     });
-    return it('verifies that an input is not disabled', function(done) {
+    it('verifies that an input is not disabled', function(done) {
       return expect('.does-exist').dom.not.to.eventually.be.disabled(done);
     });
   });
@@ -261,11 +261,11 @@ describe('the basics with eventually', function() {
     it('verifies that an element has a given class', function(done) {
       return expect('.does-exist').dom.to.eventually.have.htmlClass('second-class', done);
     });
-    return it('verifies than an element does not have a given class', function(done) {
+    it('verifies than an element does not have a given class', function(done) {
       return expect('.green-text').dom.not.to.eventually.have.htmlClass('second-class', done);
     });
   });
-  return describe('attribute', function() {
+  describe('attribute', function() {
     it('verifies that an element attribute has a given value', function(done) {
       return expect('input.does-exist').dom.to.eventually.have.attribute('value', 'People put stuff here', done);
     });
@@ -278,7 +278,7 @@ describe('the basics with eventually', function() {
     it('verifies that an attribute exists', function(done) {
       return expect('input.does-exist').dom.to.eventually.have.attribute('type', done);
     });
-    return it('verifies that an empty attribute exists', function(done) {
+    it('verifies that an empty attribute exists', function(done) {
       return expect('input.does-exist').dom.to.eventually.have.attribute('empty', done);
     });
   });
@@ -292,7 +292,7 @@ describe('going to a different page', function() {
       return done();
     });
   });
-  return it('still allows you to make assertions', function(done) {
+  it('still allows you to make assertions', function(done) {
     return expect('.does-exist:text').dom.to.to.be.visible(done);
   });
 });

@@ -123,21 +123,23 @@ module.exports = function(driver, timeout) {
       };
 
       var assertDisplayed = function() {
-        return select(self._obj, utils.flag(self, 'eventually')).then(function(obj) {
-          return promise(obj.el.isDisplayed()).then(function(visible) {
-            //selenium may say it's visible even though it's off-screen
-            if (visible) {
-              return promise(driver.manage().window().getSize()).then(function(winSize) {
-                return promise(obj.el.getSize()).then(function(size) {
-                  return promise(obj.el.getLocation()).then(function(loc) {
-                    return assert(loc.x > -size.width && loc.y > -size.height && loc.y < winSize.height && loc.x < winSize.width);
+        return assertElementExists(self._obj, utils.flag(self, 'eventually')).then(function() {
+          return select(self._obj, utils.flag(self, 'eventually')).then(function(obj) {
+            return promise(obj.el.isDisplayed()).then(function(visible) {
+              //selenium may say it's visible even though it's off-screen
+              if (visible) {
+                return promise(driver.manage().window().getSize()).then(function(winSize) {
+                  return promise(obj.el.getSize()).then(function(size) {
+                    return promise(obj.el.getLocation()).then(function(loc) {
+                      return assert(loc.x > -size.width && loc.y > -size.height && loc.y < winSize.height && loc.x < winSize.width);
+                    });
                   });
                 });
-              });
-            }
-            else {
-              return assert(visible);
-            }
+              }
+              else {
+                return assert(visible);
+              }
+            });
           });
         });
       };
