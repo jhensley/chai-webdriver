@@ -36,7 +36,7 @@ module.exports = function(driver, timeout) {
       }
 
       var sel = function() {
-        var selection = promise($.all(selector));
+        var selection = $.all(selector);
         selection.then(function(els) {
           if (els.length === 0 && retry) {
             setTimeout(sel, 100);
@@ -58,20 +58,30 @@ module.exports = function(driver, timeout) {
     //select a single DOM element
     var select = function(selector, eventually) {
       var defer = Q.defer();
+      var retry = eventually;
 
-      if (eventually) {
-        var selection = selectAll(selector, eventually);
-        selection.then(function(els) {
-          //can't resolve with the el itself because it looks like a promise, and Q deferred will wait on it
-          defer.resolve({el: els[0]});
+      if (retry) {
+        setTimeout(function() {
+          retry = false;
+        }, timeout);
+      }
+
+      var sel = function() {
+        var selection = $(selector);
+        selection.then(function(el) {
+          defer.resolve(el);
         });
         selection.fail(function() {
-          defer.reject.apply(defer, arguments);
+          if (retry) {
+            setTimeout(sel, 100);
+          }
+          else {
+            defer.reject.apply(defer, arguments);
+          }
         });
-      }
-      else {
-        defer.resolve({el: $(selector)});
-      }
+      };
+
+      sel();
 
       return defer.promise;
     };
@@ -97,8 +107,8 @@ module.exports = function(driver, timeout) {
         if (utils.flag(this, 'dom')) {
           return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function() {
 
-            return select(self._obj, utils.flag(self, 'eventually')).then(function(obj) {
-              return promise(obj.el.getText()).then(function(text) {
+            return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
+              return el.getText().then(function(text) {
                 self.assert(matcher.test(text), 'Expected element <#{this}> to match regular expression "#{exp}", but it contains "#{act}".', 'Expected element <#{this}> not to match regular expression "#{exp}"; it contains "#{act}".', matcher, text);
                 return typeof done === "function" ? done() : void 0;
               });
@@ -124,13 +134,13 @@ module.exports = function(driver, timeout) {
 
       var assertDisplayed = function() {
         return assertElementExists(self._obj, utils.flag(self, 'eventually')).then(function() {
-          return select(self._obj, utils.flag(self, 'eventually')).then(function(obj) {
-            return promise(obj.el.isDisplayed()).then(function(visible) {
+          return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
+            return el.isDisplayed().then(function(visible) {
               //selenium may say it's visible even though it's off-screen
               if (visible) {
                 return promise(driver.manage().window().getSize()).then(function(winSize) {
-                  return promise(obj.el.getSize()).then(function(size) {
-                    return promise(obj.el.getLocation()).then(function(loc) {
+                  return el.getSize().then(function(size) {
+                    return el.getLocation().then(function(loc) {
                       return assert(loc.x > -size.width && loc.y > -size.height && loc.y < winSize.height && loc.x < winSize.width);
                     });
                   });
@@ -178,8 +188,8 @@ module.exports = function(driver, timeout) {
       }
 
       return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function() {
-        return select(self._obj, utils.flag(self, 'eventually')).then(function(obj) {
-          return promise(obj.el.getText()).then(function(text) {
+        return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
+          return el.getText().then(function(text) {
             if (matcher instanceof RegExp) {
               self.assert(matcher.test(text), 'Expected element <#{this}> to match regular expression "#{exp}", but it contains "#{act}".', 'Expected element <#{this}> not to match regular expression "#{exp}"; it contains "#{act}".', matcher, text);
             }
@@ -202,8 +212,8 @@ module.exports = function(driver, timeout) {
       }
 
       return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function() {
-        return select(self._obj, utils.flag(self, 'eventually')).then(function(obj) {
-          return promise(obj.el.getCssValue(property)).then(function(style) {
+        return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
+          return el.getCssValue(property).then(function(style) {
             self.assert(style === value, "Expected " + property + " of element <" + self._obj + "> to be '" + value + "', but it is '" + style + "'.", "Expected " + property + " of element <" + self._obj + "> to not be '" + value + "', but it is.");
             return typeof done === "function" ? done() : void 0;
           });
@@ -218,8 +228,8 @@ module.exports = function(driver, timeout) {
       }
 
       return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function() {
-        return select(self._obj, utils.flag(self, 'eventually')).then(function(obj) {
-          return promise(obj.el.getAttribute('value')).then(function(actualValue) {
+        return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
+          return el.getAttribute('value').then(function(actualValue) {
             self.assert(value === actualValue, "Expected value of element <" + self._obj + "> to be '" + value + "', but it is '" + actualValue + "'.", "Expected value of element <" + self._obj + "> to not be '" + value + "', but it is.");
             return typeof done === "function" ? done() : void 0;
           });
@@ -234,8 +244,8 @@ module.exports = function(driver, timeout) {
       }
 
       return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function() {
-        return select(self._obj, utils.flag(self, 'eventually')).then(function(obj) {
-          return promise(obj.el.getAttribute('disabled')).then(function(disabled) {
+        return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
+          return el.getAttribute('disabled').then(function(disabled) {
             self.assert(disabled, 'Expected #{this} to be disabled but it is not', 'Expected #{this} to not be disabled but it is');
             return typeof done === "function" ? done() : void 0;
           });
@@ -250,8 +260,8 @@ module.exports = function(driver, timeout) {
       }
 
       return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function() {
-        return select(self._obj, utils.flag(self, 'eventually')).then(function(obj) {
-          return promise(obj.el.getAttribute('class')).then(function(classList) {
+        return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
+          return el.getAttribute('class').then(function(classList) {
             self.assert(~classList.indexOf(value), "Expected " + classList + " to contain " + value + ", but it does not.");
             return typeof done === "function" ? done() : void 0;
           });
@@ -266,8 +276,8 @@ module.exports = function(driver, timeout) {
       }
 
       return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function() {
-        return select(self._obj, utils.flag(self, 'eventually')).then(function(obj) {
-          return promise(obj.el.getAttribute(attribute)).then(function(actual) {
+        return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
+          return el.getAttribute(attribute).then(function(actual) {
             if (typeof value === 'function') {
               done = value;
               self.assert(typeof actual === 'string', "Expected attribute " + attribute + " of element <" + self._obj + "> to exist", "Expected attribute " + attribute + " of element <" + self._obj + "> to not exist");
