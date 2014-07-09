@@ -94,7 +94,7 @@ module.exports = function(driver, timeout) {
     };
 
     var assertElementExists = function(selector, eventually) {
-      return select(selector, eventually).then(function(){}, function() {
+      return select(selector, eventually).fail(function() {
         throw new Error('element does not exist');
       });
     };
@@ -110,12 +110,9 @@ module.exports = function(driver, timeout) {
         var self = this;
 
         if (utils.flag(this, 'dom')) {
-          return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function() {
-
-            return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
-              return el.getText().then(function(text) {
-                self.assert(matcher.test(text), 'Expected element <#{this}> to match regular expression "#{exp}", but it contains "#{act}".', 'Expected element <#{this}> not to match regular expression "#{exp}"; it contains "#{act}".', matcher, text);
-              });
+          return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function(el) {
+            return el.getText().then(function(text) {
+              self.assert(matcher.test(text), 'Expected element <#{this}> to match regular expression "#{exp}", but it contains "#{act}".', 'Expected element <#{this}> not to match regular expression "#{exp}"; it contains "#{act}".', matcher, text);
             });
           });
         }
@@ -135,23 +132,21 @@ module.exports = function(driver, timeout) {
         self.assert(condition, 'Expected #{this} to be visible but it is not', 'Expected #{this} to not be visible but it is');
       };
 
-      return assertElementExists(self._obj, utils.flag(self, 'eventually')).then(function() {
-        return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
-          return el.isDisplayed().then(function(visible) {
-            //selenium may say it's visible even though it's off-screen
-            if (visible) {
-              return promise(driver.manage().window().getSize()).then(function(winSize) {
-                return el.getSize().then(function(size) {
-                  return el.getLocation().then(function(loc) {
-                    return assert(loc.x > -size.width && loc.y > -size.height && loc.y < winSize.height && loc.x < winSize.width);
-                  });
+      return assertElementExists(self._obj, utils.flag(self, 'eventually')).then(function(el) {
+        return el.isDisplayed().then(function(visible) {
+          //selenium may say it's visible even though it's off-screen
+          if (visible) {
+            return promise(driver.manage().window().getSize()).then(function(winSize) {
+              return el.getSize().then(function(size) {
+                return el.getLocation().then(function(loc) {
+                  return assert(loc.x > -size.width && loc.y > -size.height && loc.y < winSize.height && loc.x < winSize.width);
                 });
               });
-            }
-            else {
-              return assert(visible);
-            }
-          });
+            });
+          }
+          else {
+            return assert(visible);
+          }
         });
       }, function(err) {
         if (utils.flag(self, 'negate')) {
@@ -178,19 +173,17 @@ module.exports = function(driver, timeout) {
         throw new Error('Can only test text of dom elements');
       }
 
-      return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function() {
-        return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
-          return el.getText().then(function(text) {
-            if (matcher instanceof RegExp) {
-              self.assert(matcher.test(text), 'Expected element <#{this}> to match regular expression "#{exp}", but it contains "#{act}".', 'Expected element <#{this}> not to match regular expression "#{exp}"; it contains "#{act}".', matcher, text);
-            }
-            else if (utils.flag(self, 'contains')) {
-              self.assert(~text.indexOf(matcher), 'Expected element <#{this}> to contain text "#{exp}", but it contains "#{act}" instead.', 'Expected element <#{this}> not to contain text "#{exp}", but it contains "#{act}".', matcher, text);
-            }
-            else {
-              self.assert(text === matcher, 'Expected text of element <#{this}> to be "#{exp}", but it was "#{act}" instead.', 'Expected text of element <#{this}> not to be "#{exp}", but it was.', matcher, text);
-            }
-          });
+      return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function(el) {
+        return el.getText().then(function(text) {
+          if (matcher instanceof RegExp) {
+            self.assert(matcher.test(text), 'Expected element <#{this}> to match regular expression "#{exp}", but it contains "#{act}".', 'Expected element <#{this}> not to match regular expression "#{exp}"; it contains "#{act}".', matcher, text);
+          }
+          else if (utils.flag(self, 'contains')) {
+            self.assert(~text.indexOf(matcher), 'Expected element <#{this}> to contain text "#{exp}", but it contains "#{act}" instead.', 'Expected element <#{this}> not to contain text "#{exp}", but it contains "#{act}".', matcher, text);
+          }
+          else {
+            self.assert(text === matcher, 'Expected text of element <#{this}> to be "#{exp}", but it was "#{act}" instead.', 'Expected text of element <#{this}> not to be "#{exp}", but it was.', matcher, text);
+          }
         });
       });
     });
@@ -201,11 +194,9 @@ module.exports = function(driver, timeout) {
         throw new Error('Can only test style of dom elements');
       }
 
-      return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function() {
-        return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
-          return el.getCssValue(property).then(function(style) {
-            self.assert(style === value, "Expected " + property + " of element <" + self._obj + "> to be '" + value + "', but it is '" + style + "'.", "Expected " + property + " of element <" + self._obj + "> to not be '" + value + "', but it is.");
-          });
+      return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function(el) {
+        return el.getCssValue(property).then(function(style) {
+          self.assert(style === value, "Expected " + property + " of element <" + self._obj + "> to be '" + value + "', but it is '" + style + "'.", "Expected " + property + " of element <" + self._obj + "> to not be '" + value + "', but it is.");
         });
       });
     });
@@ -216,11 +207,9 @@ module.exports = function(driver, timeout) {
         throw new Error('Can only test value of dom elements');
       }
 
-      return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function() {
-        return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
-          return el.getAttribute('value').then(function(actualValue) {
-            self.assert(value === actualValue, "Expected value of element <" + self._obj + "> to be '" + value + "', but it is '" + actualValue + "'.", "Expected value of element <" + self._obj + "> to not be '" + value + "', but it is.");
-          });
+      return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function(el) {
+        return el.getAttribute('value').then(function(actualValue) {
+          self.assert(value === actualValue, "Expected value of element <" + self._obj + "> to be '" + value + "', but it is '" + actualValue + "'.", "Expected value of element <" + self._obj + "> to not be '" + value + "', but it is.");
         });
       });
     });
@@ -231,11 +220,9 @@ module.exports = function(driver, timeout) {
         throw new Error('Can only test value of dom elements');
       }
 
-      return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function() {
-        return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
-          return el.getAttribute('disabled').then(function(disabled) {
-            self.assert(disabled, 'Expected #{this} to be disabled but it is not', 'Expected #{this} to not be disabled but it is');
-          });
+      return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function(el) {
+        return el.getAttribute('disabled').then(function(disabled) {
+          self.assert(disabled, 'Expected #{this} to be disabled but it is not', 'Expected #{this} to not be disabled but it is');
         });
       });
     });
@@ -246,11 +233,9 @@ module.exports = function(driver, timeout) {
         throw new Error('Can only test value of dom elements');
       }
 
-      return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function() {
-        return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
-          return el.getAttribute('class').then(function(classList) {
-            self.assert(~classList.indexOf(value), "Expected " + classList + " to contain " + value + ", but it does not.");
-          });
+      return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function(el) {
+        return el.getAttribute('class').then(function(classList) {
+          self.assert(~classList.indexOf(value), "Expected " + classList + " to contain " + value + ", but it does not.");
         });
       });
     });
@@ -261,19 +246,17 @@ module.exports = function(driver, timeout) {
         throw new Error('Can only test style of dom elements');
       }
 
-      return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function() {
-        return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
-          return el.getAttribute(attribute).then(function(actual) {
-            if (typeof value === 'function') {
-              self.assert(typeof actual === 'string', "Expected attribute " + attribute + " of element <" + self._obj + "> to exist", "Expected attribute " + attribute + " of element <" + self._obj + "> to not exist");
-            }
-            else if (typeof value === 'undefined') {
-              self.assert(actual != null, "Expected attribute " + attribute + " of element <" + self._obj + "> to exist, but it does not.", "Expected attribute " + attribute + " of element <" + self._obj + "> to not exist, but it does.");
-            }
-            else {
-              self.assert(actual === value, "Expected attribute " + attribute + " of element <" + self._obj + "> to be '" + value + "', but it is '" + actual + "'.", "Expected attribute " + attribute + " of element <" + self._obj + "> to not be '" + value + "', but it is.");
-            }
-          });
+      return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function(el) {
+        return el.getAttribute(attribute).then(function(actual) {
+          if (typeof value === 'function') {
+            self.assert(typeof actual === 'string', "Expected attribute " + attribute + " of element <" + self._obj + "> to exist", "Expected attribute " + attribute + " of element <" + self._obj + "> to not exist");
+          }
+          else if (typeof value === 'undefined') {
+            self.assert(actual != null, "Expected attribute " + attribute + " of element <" + self._obj + "> to exist, but it does not.", "Expected attribute " + attribute + " of element <" + self._obj + "> to not exist, but it does.");
+          }
+          else {
+            self.assert(actual === value, "Expected attribute " + attribute + " of element <" + self._obj + "> to be '" + value + "', but it is '" + actual + "'.", "Expected attribute " + attribute + " of element <" + self._obj + "> to not be '" + value + "', but it is.");
+          }
         });
       });
     });
