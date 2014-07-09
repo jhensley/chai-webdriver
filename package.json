@@ -1,6 +1,6 @@
 {
   "name": "chai-webdriver",
-  "version": "0.11.3",
+  "version": "0.13.0",
   "description": "Build more expressive integration tests with some webdriver sugar for chai.js",
   "main": "index.js",
   "scripts": {
@@ -26,7 +26,7 @@
     "q": "~1.0.1",
     "selenium-webdriver": ">=2.39.0",
     "string": "~1.8.0",
-    "webdriver-sizzle": "git+https://git@github.com/b3nj4m/webdriver-sizzle.git#v0.2.0"
+    "webdriver-sizzle": "git+https://git@github.com/b3nj4m/webdriver-sizzle.git#v0.2.1"
   },
   "devDependencies": {
     "chai": "^1.9.0",

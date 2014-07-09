@@ -4,9 +4,11 @@ var path = require('path');
 var fs = require('fs');
 var Q = require('q');
 
-module.exports = function(driver) {
-  var sizzleCode = fs.readFileSync(path.join(__dirname, './lib', 'sizzle.min.js'));
+var sizzleCode = fs.readFileSync(path.join(__dirname, './lib', 'sizzle.min.js'));
+var oneTmpl = _.template("var module = {exports: {}};\n" + sizzleCode + "\nvar Sizzle = module.exports;\nreturn (Sizzle(<%= JSON.stringify(selector) %>) || [])[0];");
+var allTmpl = _.template("var module = {exports: {}};\n" + sizzleCode + "\nvar Sizzle = module.exports;\nreturn (Sizzle(<%= JSON.stringify(selector) %>) || []);");
 
+module.exports = function(driver) {
   var promise = function(p) {
     var defer = Q.defer();
 
@@ -21,6 +23,7 @@ module.exports = function(driver) {
     return defer.promise;
   };
 
+  //wrap an object's methods with a method that converts selenium promises to Q promises
   var promisify = function(obj) {
     var newObj = _.clone(obj);
     _.each(newObj, function(val, key) {
@@ -45,7 +48,7 @@ module.exports = function(driver) {
 
   var one = function(selector) {
     var defer = Q.defer();
-    var locator = selenium.By.js("var module = {exports: {}};\n" + sizzleCode + "\nvar Sizzle = module.exports;\nreturn (Sizzle(" + (JSON.stringify(selector)) + ") || [])[0];");
+    var locator = selenium.By.js(oneTmpl({selector: selector}));
 
     var exists = driver.isElementPresent(locator);
     exists.then(function(isPresent) {
@@ -60,7 +63,7 @@ module.exports = function(driver) {
     return defer.promise;
   };
   var all = function(selector) {
-    return promise(driver.findElements(selenium.By.js("var module = {exports: {}};\n" + sizzleCode + "\nvar Sizzle = module.exports;\nreturn (Sizzle(" + (JSON.stringify(selector)) + ") || []);")));
+    return promise(driver.findElements(selenium.By.js(allTmpl({selector: selector}))));
   };
 
   one.all = all;
