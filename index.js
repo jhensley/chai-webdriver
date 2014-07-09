@@ -153,8 +153,11 @@ module.exports = function(driver, timeout) {
             }
           });
         });
-      }, function() {
-        return assert(false);
+      }, function(err) {
+        if (utils.flag(self, 'negate')) {
+          return assert(false);
+        }
+        throw err;
       });
     });
     chai.Assertion.addMethod('count', function(length) {

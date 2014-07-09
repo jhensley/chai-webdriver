@@ -284,6 +284,33 @@ describe('the basics with eventually', function() {
   });
 });
 
+describe('failure cases', function() {
+  it('verifies that a non-existant element should not have text', function() {
+    return expect('.does-not-exist').dom.to.have.text('beans').then(function(text) {
+      throw new Error('element does not exist, but it was found to have text ' + text);
+    },
+    function(err) {
+      return expect(err.toString()).to.contain('element does not exist');
+    });
+  });
+  it('verifies that a non-existant element should not contain text', function() {
+    return expect('.does-not-exist').dom.to.contain.text('beans').then(function(text) {
+      throw new Error('element does not exist, but it was found to have text ' + text);
+    },
+    function(err) {
+      return expect(err.toString()).to.contain('element does not exist');
+    });
+  });
+  it('verifies that a non-existant element should not be visible', function() {
+    return expect('.does-not-exist').dom.to.be.visible().then(function() {
+      throw new Error('element does not exist, but it was found to be visible');
+    },
+    function(err) {
+      return expect(err.toString()).to.contain('element does not exist');
+    });
+  });
+});
+
 describe('going to a different page', function() {
   before(function(done) {
     this.timeout(0);
