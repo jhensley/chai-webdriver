@@ -4,8 +4,6 @@ var seleniumWebdriver = require('selenium-webdriver');
 var sizzle = require('webdriver-sizzle');
 var Q = require('q');
 
-var firstRegex = /:first$/i;
-
 module.exports = function(driver, timeout) {
   var $ = sizzle(driver);
 
@@ -28,10 +26,6 @@ module.exports = function(driver, timeout) {
 
     //select a bunch of DOM elements
     var selectAll = function(selector, eventually) {
-      if (firstRegex.test(selector)) {
-        return select(selector, eventually);
-      }
-
       var defer = Q.defer();
       var retry = eventually;
 
