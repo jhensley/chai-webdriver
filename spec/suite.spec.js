@@ -284,29 +284,68 @@ describe('the basics with eventually', function() {
   });
 });
 
-describe('failure cases', function() {
-  it('verifies that a non-existant element should not have text', function() {
-    return expect('.does-not-exist').dom.to.have.text('beans').then(function(text) {
-      throw new Error('element does not exist, but it was found to have text ' + text);
-    },
-    function(err) {
+describe('failure cases + error messages', function() {
+  describe('non-existant elements', function() {
+    var errHandler = function(err) {
       return expect(err.toString()).to.contain('element does not exist');
+    };
+
+    it('verifies that a non-existant element should not have text', function() {
+      return expect('.does-not-exist').dom.to.have.text('beans').then(function(text) {
+        throw new Error('element does not exist, but it was found to have text ' + text);
+      }, errHandler);
     });
-  });
-  it('verifies that a non-existant element should not contain text', function() {
-    return expect('.does-not-exist').dom.to.contain.text('beans').then(function(text) {
-      throw new Error('element does not exist, but it was found to have text ' + text);
-    },
-    function(err) {
-      return expect(err.toString()).to.contain('element does not exist');
+    it('verifies that a non-existant element should not contain text', function() {
+      return expect('.does-not-exist').dom.to.contain.text('beans').then(function(text) {
+        throw new Error('element does not exist, but it was found to have text ' + text);
+      }, errHandler);
     });
-  });
-  it('verifies that a non-existant element should not be visible', function() {
-    return expect('.does-not-exist').dom.to.be.visible().then(function() {
-      throw new Error('element does not exist, but it was found to be visible');
-    },
-    function(err) {
-      return expect(err.toString()).to.contain('element does not exist');
+    it('verifies that a non-existant element should not be visible', function() {
+      return expect('.does-not-exist').dom.to.be.visible().then(function() {
+        throw new Error('element does not exist, but it was found to be visible');
+      }, errHandler);
+    });
+    it('verifies that a non-existant element should not match text', function() {
+      return expect('.does-not-exist').dom.to.match(/beans/).then(function() {
+        throw new Error('element does not exist, but it was found to match text');
+      }, errHandler);
+    });
+    it('verifies that a non-existant element should not be disabled', function() {
+      return expect('.does-not-exist').dom.to.be.disabled().then(function() {
+        throw new Error('element does not exist, but it was found to be disabled');
+      }, errHandler);
+    });
+    it('verifies that a non-existant element should not have count 1', function() {
+      return expect('.does-not-exist').dom.to.have.count(1).then(function() {
+        throw new Error('element does not exist, but it was found to have count 1');
+      }, function(err) {
+        return expect(err.toString()).to.contain("Expected '.does-not-exist' to appear in the DOM 1 times, but it shows up 0 times instead.");
+      });
+    });
+    it('verifies that a non-existant element should not have styles', function() {
+      return expect('.does-not-exist').dom.to.have.style('padding', '10px').then(function() {
+        throw new Error('element does not exist, but it was found to have padding: 10px');
+      }, errHandler);
+    });
+    it('verifies that a non-existant element should not have a value', function() {
+      return expect('.does-not-exist').dom.to.have.value('beans').then(function() {
+        throw new Error('element does not exist, but it was found to have value beans');
+      }, errHandler);
+    });
+    it('verifies that a non-existant element should not have a htmlClass', function() {
+      return expect('.does-not-exist').dom.to.have.htmlClass('beans').then(function() {
+        throw new Error('element does not exist, but it was found to have htmlClass beans');
+      }, errHandler);
+    });
+    it('verifies that a non-existant element should not have attributes', function() {
+      return expect('.does-not-exist').dom.to.have.attribute('className').then(function() {
+        throw new Error('element does not exist, but it was found to have attribute className');
+      }, errHandler);
+    });
+    it('verifies that a non-existant element should not have attribute values', function() {
+      return expect('.does-not-exist').dom.to.have.attribute('className', 'beans').then(function() {
+        throw new Error('element does not exist, but it was found to have attribute className="beans"');
+      }, errHandler);
     });
   });
 });
