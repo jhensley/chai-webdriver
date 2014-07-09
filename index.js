@@ -4,6 +4,8 @@ var seleniumWebdriver = require('selenium-webdriver');
 var sizzle = require('webdriver-sizzle');
 var Q = require('q');
 
+var firstRegex = /:first$/i;
+
 module.exports = function(driver, timeout) {
   var $ = sizzle(driver);
 
@@ -26,6 +28,10 @@ module.exports = function(driver, timeout) {
 
     //select a bunch of DOM elements
     var selectAll = function(selector, eventually) {
+      if (firstRegex.test(selector)) {
+        return select(selector, eventually);
+      }
+
       var defer = Q.defer();
       var retry = eventually;
 
@@ -39,6 +45,7 @@ module.exports = function(driver, timeout) {
         var selection = $.all(selector);
         selection.then(function(els) {
           if (els.length === 0 && retry) {
+            //retry every 100 ms until success or timeout
             setTimeout(sel, 100);
           }
           else {
@@ -87,10 +94,8 @@ module.exports = function(driver, timeout) {
     };
 
     var assertElementExists = function(selector, eventually) {
-      return selectAll(selector, eventually).then(function(els) {
-        if (els.length === 0) {
-          throw new Error("Could not find element with selector " + selector);
-        }
+      return select(selector, eventually).then(function(){}, function() {
+        throw new Error('element does not exist');
       });
     };
 
@@ -101,7 +106,7 @@ module.exports = function(driver, timeout) {
       return utils.flag(this, 'eventually', true);
     });
     chai.Assertion.overwriteMethod('match', function(_super) {
-      return function(matcher, done) {
+      return function(matcher) {
         var self = this;
 
         if (utils.flag(this, 'dom')) {
@@ -110,7 +115,6 @@ module.exports = function(driver, timeout) {
             return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
               return el.getText().then(function(text) {
                 self.assert(matcher.test(text), 'Expected element <#{this}> to match regular expression "#{exp}", but it contains "#{act}".', 'Expected element <#{this}> not to match regular expression "#{exp}"; it contains "#{act}".', matcher, text);
-                return typeof done === "function" ? done() : void 0;
               });
             });
           });
@@ -120,7 +124,7 @@ module.exports = function(driver, timeout) {
         }
       };
     });
-    chai.Assertion.addMethod('visible', function(done) {
+    chai.Assertion.addMethod('visible', function() {
       var self = this;
 
       if (!utils.flag(this, 'dom')) {
@@ -129,46 +133,31 @@ module.exports = function(driver, timeout) {
 
       var assert = function(condition) {
         self.assert(condition, 'Expected #{this} to be visible but it is not', 'Expected #{this} to not be visible but it is');
-        return typeof done === "function" ? done() : void 0;
       };
 
-      var assertDisplayed = function() {
-        return assertElementExists(self._obj, utils.flag(self, 'eventually')).then(function() {
-          return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
-            return el.isDisplayed().then(function(visible) {
-              //selenium may say it's visible even though it's off-screen
-              if (visible) {
-                return promise(driver.manage().window().getSize()).then(function(winSize) {
-                  return el.getSize().then(function(size) {
-                    return el.getLocation().then(function(loc) {
-                      return assert(loc.x > -size.width && loc.y > -size.height && loc.y < winSize.height && loc.x < winSize.width);
-                    });
+      return assertElementExists(self._obj, utils.flag(self, 'eventually')).then(function() {
+        return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
+          return el.isDisplayed().then(function(visible) {
+            //selenium may say it's visible even though it's off-screen
+            if (visible) {
+              return promise(driver.manage().window().getSize()).then(function(winSize) {
+                return el.getSize().then(function(size) {
+                  return el.getLocation().then(function(loc) {
+                    return assert(loc.x > -size.width && loc.y > -size.height && loc.y < winSize.height && loc.x < winSize.width);
                   });
                 });
-              }
-              else {
-                return assert(visible);
-              }
-            });
+              });
+            }
+            else {
+              return assert(visible);
+            }
           });
         });
-      };
-
-      if (utils.flag(this, 'negate')) {
-        return selectAll(this._obj, utils.flag(this, 'eventually')).then(function(els) {
-          if (els.length > 0) {
-            return assertDisplayed();
-          }
-          else {
-            return assert(els.length > 0);
-          }
-        });
-      }
-      else {
-        return assertDisplayed();
-      }
+      }, function() {
+        return assert(false);
+      });
     });
-    chai.Assertion.addMethod('count', function(length, done) {
+    chai.Assertion.addMethod('count', function(length) {
       var self = this;
 
       if (!utils.flag(this, 'dom')) {
@@ -177,10 +166,9 @@ module.exports = function(driver, timeout) {
 
       return selectAll(this._obj, utils.flag(this, 'eventually')).then(function(els) {
         self.assert(els.length === length, 'Expected #{this} to appear in the DOM #{exp} times, but it shows up #{act} times instead.', 'Expected #{this} not to appear in the DOM #{exp} times, but it does.', length, els.length);
-        return typeof done === "function" ? done() : void 0;
       });
     });
-    chai.Assertion.addMethod('text', function(matcher, done) {
+    chai.Assertion.addMethod('text', function(matcher) {
       var self = this;
 
       if (!utils.flag(this, 'dom')) {
@@ -199,12 +187,11 @@ module.exports = function(driver, timeout) {
             else {
               self.assert(text === matcher, 'Expected text of element <#{this}> to be "#{exp}", but it was "#{act}" instead.', 'Expected text of element <#{this}> not to be "#{exp}", but it was.', matcher, text);
             }
-            return typeof done === "function" ? done() : void 0;
           });
         });
       });
     });
-    chai.Assertion.addMethod('style', function(property, value, done) {
+    chai.Assertion.addMethod('style', function(property, value) {
       var self = this;
 
       if (!utils.flag(this, 'dom')) {
@@ -215,12 +202,11 @@ module.exports = function(driver, timeout) {
         return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
           return el.getCssValue(property).then(function(style) {
             self.assert(style === value, "Expected " + property + " of element <" + self._obj + "> to be '" + value + "', but it is '" + style + "'.", "Expected " + property + " of element <" + self._obj + "> to not be '" + value + "', but it is.");
-            return typeof done === "function" ? done() : void 0;
           });
         });
       });
     });
-    chai.Assertion.addMethod('value', function(value, done) {
+    chai.Assertion.addMethod('value', function(value) {
       var self = this;
 
       if (!utils.flag(this, 'dom')) {
@@ -231,12 +217,11 @@ module.exports = function(driver, timeout) {
         return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
           return el.getAttribute('value').then(function(actualValue) {
             self.assert(value === actualValue, "Expected value of element <" + self._obj + "> to be '" + value + "', but it is '" + actualValue + "'.", "Expected value of element <" + self._obj + "> to not be '" + value + "', but it is.");
-            return typeof done === "function" ? done() : void 0;
           });
         });
       });
     });
-    chai.Assertion.addMethod('disabled', function(done) {
+    chai.Assertion.addMethod('disabled', function() {
       var self = this;
 
       if (!utils.flag(this, 'dom')) {
@@ -247,12 +232,11 @@ module.exports = function(driver, timeout) {
         return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
           return el.getAttribute('disabled').then(function(disabled) {
             self.assert(disabled, 'Expected #{this} to be disabled but it is not', 'Expected #{this} to not be disabled but it is');
-            return typeof done === "function" ? done() : void 0;
           });
         });
       });
     });
-    chai.Assertion.addMethod('htmlClass', function(value, done) {
+    chai.Assertion.addMethod('htmlClass', function(value) {
       var self = this;
 
       if (!utils.flag(this, 'dom')) {
@@ -263,12 +247,11 @@ module.exports = function(driver, timeout) {
         return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
           return el.getAttribute('class').then(function(classList) {
             self.assert(~classList.indexOf(value), "Expected " + classList + " to contain " + value + ", but it does not.");
-            return typeof done === "function" ? done() : void 0;
           });
         });
       });
     });
-    return chai.Assertion.addMethod('attribute', function(attribute, value, done) {
+    return chai.Assertion.addMethod('attribute', function(attribute, value) {
       var self = this;
 
       if (!utils.flag(this, 'dom')) {
@@ -279,13 +262,14 @@ module.exports = function(driver, timeout) {
         return select(self._obj, utils.flag(self, 'eventually')).then(function(el) {
           return el.getAttribute(attribute).then(function(actual) {
             if (typeof value === 'function') {
-              done = value;
               self.assert(typeof actual === 'string', "Expected attribute " + attribute + " of element <" + self._obj + "> to exist", "Expected attribute " + attribute + " of element <" + self._obj + "> to not exist");
+            }
+            else if (typeof value === 'undefined') {
+              self.assert(actual != null, "Expected attribute " + attribute + " of element <" + self._obj + "> to exist, but it does not.", "Expected attribute " + attribute + " of element <" + self._obj + "> to not exist, but it does.");
             }
             else {
               self.assert(actual === value, "Expected attribute " + attribute + " of element <" + self._obj + "> to be '" + value + "', but it is '" + actual + "'.", "Expected attribute " + attribute + " of element <" + self._obj + "> to not be '" + value + "', but it is.");
             }
-            return typeof done === "function" ? done() : void 0;
           });
         });
       });

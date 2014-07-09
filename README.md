@@ -39,7 +39,7 @@ You can also add an `eventually` to tell `chai-webdriver` to poll for the select
 
 - `expect(selector).dom.to.eventually.have.htmlClass('warning')`
 
-All of these assertions return a `Q` promise.
+All of these assertions return a `Q` promise, so you can just return the promise if you're using mocha.
 
 ## Setup
 
@@ -60,8 +60,14 @@ var chaiWebdriver = require('chai-webdriver');
 chai.use(chaiWebdriver(driver, timeout));
 
 // And you're good to go!
-driver.get('http://github.com');
-chai.expect('#site-container h1.heading').dom.to.not.contain.text("I'm a kitty!");
+chai.describe('kitty test', function() {
+  chai.before(function(done) {
+    driver.get('http://github.com').then(done);
+  });
+  it('should not find a kitty', function() {
+    return chai.expect('#site-container h1.heading').dom.to.not.contain.text("I'm a kitty!");
+  });
+});
 ```
 
 ## Contributing
