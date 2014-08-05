@@ -26,7 +26,7 @@ Finally, we can add our assertion to the chain:
 - `expect(selector).dom.to.be.visible()` - Check whether or not the element is visible on-screen
 - `expect(selector).dom.to.be.disabled()` - Check whether or not the form element is disabled
 - `expect(selector).dom.to.have.count(number)` - Test how many elements exist in the dom with the supplied selector
-- `expect(selector).dom.to.have.style('property', 'value')` - Test the CSS style of the element. Exact matches only, unfortunately, for now.
+- `expect(selector).dom.to.have.style('property', 'value')` - Test the CSS style of the element (exact string match).
 - `expect(selector).dom.to.have.value('string')` - Test the value of a form field against supplied string.
 - `expect(selector).dom.to.have.htmlClass('warning')` - Tests that the element has `warning` as one of its class attributes.
 - `expect(selector).dom.to.have.attribute('attribute', 'value')` - Test an element's attribute value. Exact matches only. By omitting `value` test simply checks for existance of attribute.
@@ -35,11 +35,33 @@ You can also always add a `not` in there to negate the assertion:
 
 - `expect(selector).dom.not.to.have.style('property', 'value')`
 
-You can also add an `eventually` to tell `chai-webdriver` to poll for the selected elements up to the given timeout:
+
+### `larger` and `smaller`
+
+Several of the assertion methods support the `larger` and `smaller` properties, which allow numeric comparisons. e.g. for `value()`:
+- `expect('input[type=number]').dom.to.have.larger.value(0)` - Test for a numeric value larger (>=) than 0.
+- `expect('input[type=number]').dom.to.have.smaller.value(0)` - Test for a numeric value smaller (<=) than 0.
+- `expect('input[type=number]').dom.not.to.have.larger.value(0)` - Test for a numeric value not larger (<) than 0.
+- `expect('input[type=number]').dom.not.to.have.smaller.value(0)` - Test for a numeric value not smaller (>) than 0.
+
+Other methods which support `larger` and `smaller`:
+- `expect(selector).dom.to.have.larger.text(0)` - Test for a text with length larger (>=) than 0.
+- `expect(selector).dom.to.have.larger.count(0)` - Test for number of elements matching `selector` larger (>=) than 0.
+- `expect(selector).dom.to.have.larger.style('width', 0)` - Test for css `width` attribute larger (>=) than 0 (ignores units).
+- `expect(selector).dom.to.have.larger.attribute('offsetWidth', 0)` - Test for `offsetWidth` attribute larger (>=) than 0.
+
+
+### `eventually`
+
+You can also add an `eventually` to tell `chai-webdriver` to poll for the selected elements up to the configured timeout (see Setup below):
 
 - `expect(selector).dom.to.eventually.have.htmlClass('warning')`
 
+
+### Everything returns a promise
+
 All of these assertions return a `Q` promise, so you can just return the promise if you're using mocha.
+
 
 ## Setup
 

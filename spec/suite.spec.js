@@ -44,6 +44,18 @@ describe('the basics', function() {
     it('verifies that an element does not have exact text', function() {
       return expect('#finnegan-header').dom.not.to.have.text("Wake");
     });
+    it('verifies that an element has text longer than 10 characters', function() {
+      return expect('#finnegan-header').dom.to.have.larger.text(10);
+    });
+    it('verifies that an element has text smaller than 10000 characters', function() {
+      return expect('#finnegan-header').dom.to.have.smaller.text(10000);
+    });
+    it('verifies that an element does not have text longer than 10000 characters', function() {
+      return expect('#finnegan-header').dom.not.to.have.larger.text(10000);
+    });
+    it('verifies that an element does not have text smaller than 10 characters', function() {
+      return expect('#finnegan-header').dom.not.to.have.smaller.text(10);
+    });
   });
   describe('#text (regexp version)', function() {
     it('verifies that an element has a regexp match', function() {
@@ -100,10 +112,22 @@ describe('the basics', function() {
   });
   describe('#count', function() {
     it('verifies that an element appears thrice', function() {
-      return expect('input').dom.to.have.count(3);
+      return expect('input').dom.to.have.count(4);
     });
     it('verifies that a non-existing element has a count of 0', function() {
       return expect('.does-not-exist').dom.to.have.count(0);
+    });
+    it('verifies that an element appears more than twice', function() {
+      return expect('input').dom.to.have.larger.count(2);
+    });
+    it('verifies that an element appears less than five times', function() {
+      return expect('input').dom.to.have.smaller.count(5);
+    });
+    it('verifies that an element does not appear more than five times', function() {
+      return expect('input').dom.not.to.have.larger.count(5);
+    });
+    it('verifies that an element does not appear less than twice', function() {
+      return expect('input').dom.not.to.have.smaller.count(2);
     });
   });
   describe('#style', function() {
@@ -113,6 +137,18 @@ describe('the basics', function() {
     it('verifies that an element does not have a red background', function() {
       return expect('.green-text').dom.to.have.style('background-color', 'rgba(0, 0, 0, 0)');
     });
+    it('verifies that an element has a width larger than 10', function() {
+      return expect('#finnegan-header').dom.to.have.larger.style('width', 10);
+    });
+    it('verifies that an element has a width smaller than 10000', function() {
+      return expect('#finnegan-header').dom.to.have.smaller.style('width', 10000);
+    });
+    it('verifies that an element does not have a width larger than 10000', function() {
+      return expect('#finnegan-header').dom.not.to.have.larger.style('width', 10000);
+    });
+    it('verifies that an element does not have a width smaller than 10', function() {
+      return expect('#finnegan-header').dom.not.to.have.smaller.style('width', 10);
+    });
   });
   describe('#value', function() {
     it('verifies that a text field has a specific value', function() {
@@ -120,6 +156,18 @@ describe('the basics', function() {
     });
     it('verifies that a text field does not have a specific value', function() {
       return expect('.does-exist').dom.not.to.have.value('Beep boop');
+    });
+    it('verifies that a number field has a value larger than 12', function() {
+      return expect('.numeric-input').dom.to.have.larger.value(12);
+    });
+    it('verifies that a number field has a value smaller than 53', function() {
+      return expect('.numeric-input').dom.to.have.smaller.value(53);
+    });
+    it('verifies that a number field does not have a value larger than 53', function() {
+      return expect('.numeric-input').dom.not.to.have.larger.value(53);
+    });
+    it('verifies that a number field does not have a value smaller than 12', function() {
+      return expect('.numeric-input').dom.not.to.have.smaller.value(12);
     });
   });
   describe('#disabled', function() {
@@ -154,6 +202,18 @@ describe('the basics', function() {
     it('verifies that an empty attribute exists', function() {
       return expect('input.does-exist').dom.to.have.attribute('empty');
     });
+    it('verifies that an element has a numeric attribute larger than 12', function() {
+      return expect('.numeric-attribute').dom.to.have.larger.attribute('data-number', 12);
+    });
+    it('verifies that an element has a numeric attribute smaller than 53', function() {
+      return expect('.numeric-attribute').dom.to.have.smaller.attribute('data-number', 53);
+    });
+    it('verifies that an element does not have a numeric attribute larger than 53', function() {
+      return expect('.numeric-attribute').dom.not.to.have.larger.attribute('data-number', 53);
+    });
+    it('verifies that an element does not have a numeric attribute smaller than 12', function() {
+      return expect('.numeric-attribute').dom.not.to.have.smaller.attribute('data-number', 12);
+    });
   });
 });
 
@@ -170,6 +230,18 @@ describe('the basics with eventually', function() {
     });
     it('verifies that an element does not have exact text', function() {
       return expect('#finnegan-header').dom.not.to.eventually.have.text("Wake");
+    });
+    it('verifies that an element has text longer than 10 characters', function() {
+      return expect('#finnegan-header').dom.to.eventually.have.larger.text(10);
+    });
+    it('verifies that an element has text smaller than 10000 characters', function() {
+      return expect('#finnegan-header').dom.to.eventually.have.smaller.text(10000);
+    });
+    it('verifies that an element does not have text longer than 10000 characters', function() {
+      return expect('#finnegan-header').dom.not.to.eventually.have.larger.text(10000);
+    });
+    it('verifies that an element does not have text smaller than 10 characters', function() {
+      return expect('#finnegan-header').dom.not.to.eventually.have.smaller.text(10);
     });
   });
   describe('#text (regexp version)', function() {
@@ -227,10 +299,22 @@ describe('the basics with eventually', function() {
   });
   describe('#count', function() {
     it('verifies that an element appears thrice', function() {
-      return expect('input').dom.to.eventually.have.count(3);
+      return expect('input').dom.to.eventually.have.count(4);
     });
     it('verifies that a non-existing element has a count of 0', function() {
       return expect('.does-not-exist').dom.to.eventually.have.count(0);
+    });
+    it('verifies that an element appears more than twice', function() {
+      return expect('input').dom.to.eventually.have.larger.count(2);
+    });
+    it('verifies that an element appears less than five times', function() {
+      return expect('input').dom.to.eventually.have.smaller.count(5);
+    });
+    it('verifies that an element does not appear more than five times', function() {
+      return expect('input').dom.not.to.eventually.have.larger.count(5);
+    });
+    it('verifies that an element does not appear less than twice', function() {
+      return expect('input').dom.not.to.eventually.have.smaller.count(2);
     });
   });
   describe('#style', function() {
@@ -240,6 +324,18 @@ describe('the basics with eventually', function() {
     it('verifies that an element does not have a red background', function() {
       return expect('.green-text').dom.to.eventually.have.style('background-color', 'rgba(0, 0, 0, 0)');
     });
+    it('verifies that an element has a width larger than 10', function() {
+      return expect('#finnegan-header').dom.to.eventually.have.larger.style('width', 10);
+    });
+    it('verifies that an element has a width smaller than 10000', function() {
+      return expect('#finnegan-header').dom.to.eventually.have.smaller.style('width', 10000);
+    });
+    it('verifies that an element does not have a width larger than 10000', function() {
+      return expect('#finnegan-header').dom.not.to.eventually.have.larger.style('width', 10000);
+    });
+    it('verifies that an element does not have a width smaller than 10', function() {
+      return expect('#finnegan-header').dom.not.to.eventually.have.smaller.style('width', 10);
+    });
   });
   describe('#value', function() {
     it('verifies that a text field has a specific value', function() {
@@ -247,6 +343,18 @@ describe('the basics with eventually', function() {
     });
     it('verifies that a text field does not have a specific value', function() {
       return expect('.does-exist').dom.not.to.eventually.have.value('Beep boop');
+    });
+    it('verifies that a number field has a value larger than 12', function() {
+      return expect('.numeric-input').dom.to.eventually.have.larger.value(12);
+    });
+    it('verifies that a number field has a value smaller than 53', function() {
+      return expect('.numeric-input').dom.to.eventually.have.smaller.value(53);
+    });
+    it('verifies that a number field does not have a value larger than 53', function() {
+      return expect('.numeric-input').dom.not.to.eventually.have.larger.value(53);
+    });
+    it('verifies that a number field does not have a value smaller than 12', function() {
+      return expect('.numeric-input').dom.not.to.eventually.have.smaller.value(12);
     });
   });
   describe('#disabled', function() {
@@ -280,6 +388,18 @@ describe('the basics with eventually', function() {
     });
     it('verifies that an empty attribute exists', function() {
       return expect('input.does-exist').dom.to.eventually.have.attribute('empty');
+    });
+    it('verifies that an element has a numeric attribute larger than 12', function() {
+      return expect('.numeric-attribute').dom.to.eventually.have.larger.attribute('data-number', 12);
+    });
+    it('verifies that an element has a numeric attribute smaller than 53', function() {
+      return expect('.numeric-attribute').dom.to.eventually.have.smaller.attribute('data-number', 53);
+    });
+    it('verifies that an element does not have a numeric attribute larger than 53', function() {
+      return expect('.numeric-attribute').dom.not.to.eventually.have.larger.attribute('data-number', 53);
+    });
+    it('verifies that an element does not have a numeric attribute smaller than 12', function() {
+      return expect('.numeric-attribute').dom.not.to.eventually.have.smaller.attribute('data-number', 12);
     });
   });
 });
@@ -319,7 +439,7 @@ describe('failure cases + error messages', function() {
       return expect('.does-not-exist').dom.to.have.count(1).then(function() {
         throw new Error('element does not exist, but it was found to have count 1');
       }, function(err) {
-        return expect(err.toString()).to.contain("Expected '.does-not-exist' to appear in the DOM 1 times, but it shows up 0 times instead.");
+        return expect(err.toString()).to.contain("Expected '.does-not-exist' to appear 1 times, but it appeared 0 times.");
       });
     });
     it('verifies that a non-existant element should not have styles', function() {

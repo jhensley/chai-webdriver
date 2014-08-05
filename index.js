@@ -4,6 +4,8 @@ var seleniumWebdriver = require('selenium-webdriver');
 var sizzle = require('webdriver-sizzle');
 var Q = require('q');
 
+//TODO add styleAbove, styleBelow, attributeAbove, attributeBelow to allow less-than, greater-than comparisons? or just larger/smaller properties?
+//TODO add displayed method which just returns selenium's isDisplayed result
 module.exports = function(driver, timeout) {
   var $ = sizzle(driver);
 
@@ -94,10 +96,18 @@ module.exports = function(driver, timeout) {
     };
 
     chai.Assertion.addProperty('dom', function() {
-      return utils.flag(this, 'dom', true);
+      utils.flag(this, 'dom', true);
     });
     chai.Assertion.addProperty('eventually', function() {
-      return utils.flag(this, 'eventually', true);
+      utils.flag(this, 'eventually', true);
+    });
+    chai.Assertion.addProperty('larger', function() {
+      utils.flag(this, 'parseNumber', true);
+      utils.flag(this, 'larger', true);
+    });
+    chai.Assertion.addProperty('smaller', function() {
+      utils.flag(this, 'parseNumber', true);
+      utils.flag(this, 'smaller', true);
     });
     chai.Assertion.overwriteMethod('match', function(_super) {
       return function(matcher) {
@@ -157,7 +167,15 @@ module.exports = function(driver, timeout) {
       }
 
       return selectAll(this._obj, utils.flag(this, 'eventually')).then(function(els) {
-        self.assert(els.length === length, 'Expected #{this} to appear in the DOM #{exp} times, but it shows up #{act} times instead.', 'Expected #{this} not to appear in the DOM #{exp} times, but it does.', length, els.length);
+        if (utils.flag(self, 'larger')) {
+          self.assert(els.length >= length, 'Expected #{this} to appear more than #{exp} times, but it appeared #{act} times.', 'Expected #{this} not to appear more than #{exp} times, but it appeared #{act} times.', length, els.length);
+        }
+        else if (utils.flag(self, 'smaller')) {
+          self.assert(els.length <= length, 'Expected #{this} to appear less than #{exp} times, but it appeared #{act} times.', 'Expected #{this} not to appear less than #{exp} times, but it appeared #{act} times.', length, els.length);
+        }
+        else {
+          self.assert(els.length === length, 'Expected #{this} to appear #{exp} times, but it appeared #{act} times.', 'Expected #{this} not to appear #{exp} times, but it did.', length, els.length);
+        }
       });
     });
     chai.Assertion.addMethod('text', function(matcher) {
@@ -175,6 +193,16 @@ module.exports = function(driver, timeout) {
           else if (utils.flag(self, 'contains')) {
             self.assert(~text.indexOf(matcher), 'Expected element <#{this}> to contain text "#{exp}", but it contains "#{act}" instead.', 'Expected element <#{this}> not to contain text "#{exp}", but it contains "#{act}".', matcher, text);
           }
+          else if (utils.flag(self, 'parseNumber')) {
+            text = text.length;
+
+            if (utils.flag(self, 'larger')) {
+              self.assert(text >= matcher, 'Expected length of text of element <#{this}> to be larger than #{exp}, but it was #{act}.', 'Expected length of text of element <#{this}> to not be larger than #{exp}, but it was #{act}.', matcher, text);
+            }
+            else if (utils.flag(self, 'smaller')) {
+              self.assert(text <= matcher, 'Expected length of text of element <#{this}> to be smaller than #{exp}, but it was #{act}.', 'Expected length of text of element <#{this}> to not be smaller than #{exp}, but it was #{act}.', matcher, text);
+            }
+          }
           else {
             self.assert(text === matcher, 'Expected text of element <#{this}> to be "#{exp}", but it was "#{act}" instead.', 'Expected text of element <#{this}> not to be "#{exp}", but it was.', matcher, text);
           }
@@ -190,7 +218,19 @@ module.exports = function(driver, timeout) {
 
       return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function(el) {
         return el.getCssValue(property).then(function(style) {
-          self.assert(style === value, "Expected " + property + " of element <" + self._obj + "> to be '" + value + "', but it is '" + style + "'.", "Expected " + property + " of element <" + self._obj + "> to not be '" + value + "', but it is.");
+          if (utils.flag(self, 'parseNumber')) {
+            style = parseFloat(style);
+
+            if (utils.flag(self, 'larger')) {
+              self.assert(style >= value, 'Expected style ' + property + ' of element <#{this}> to be larger than #{exp}, but it was #{act}.', 'Expected style ' + property + ' of element <#{this}> not to be larger than #{exp}, but it was #{act}.', value, style);
+            }
+            else if (utils.flag(self, 'smaller')) {
+              self.assert(style <= value, 'Expected style ' + property + ' of element <#{this}> to be smaller than #{exp}, but it was #{act}.', 'Expected style ' + property + ' of element <#{this}> not to be smaller than #{exp}, but it was #{act}.', value, style);
+            }
+          }
+          else {
+            self.assert(style === value.toString(), 'Expected style ' + property + ' of element <#{this}> to be #{exp}, but it was #{act}.', 'Expected ' + property + ' of element <#{this}> to not be #{exp}, but it was.');
+          }
         });
       });
     });
@@ -203,7 +243,19 @@ module.exports = function(driver, timeout) {
 
       return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function(el) {
         return el.getAttribute('value').then(function(actualValue) {
-          self.assert(value === actualValue, "Expected value of element <" + self._obj + "> to be '" + value + "', but it is '" + actualValue + "'.", "Expected value of element <" + self._obj + "> to not be '" + value + "', but it is.");
+          if (utils.flag(self, 'parseNumber')) {
+            actualValue = parseFloat(actualValue);
+
+            if (utils.flag(self, 'larger')) {
+              self.assert(actualValue >= value, 'Expected value of element <#{this}> to be larger than #{exp}, but it was #{act}.', 'Expected value of element <#{this}> not to be larger than #{exp}, but it was #{act}.', value, actualValue);
+            }
+            else if (utils.flag(self, 'smaller')) {
+              self.assert(actualValue <= value, 'Expected value of element <#{this}> to be smaller than #{exp}, but it was #{act}.', 'Expected value of element <#{this}> not to be smaller than #{exp}, but it was #{act}.', value, actualValue);
+            }
+          }
+          else {
+            self.assert(value === actualValue, 'Expected value of element <#{this}> to be #{exp}, but it was #{act}.', 'Expected value of element <#{this}> to not be #{exp}, but it was.', value, actualValue);
+          }
         });
       });
     });
@@ -242,14 +294,23 @@ module.exports = function(driver, timeout) {
 
       return assertElementExists(this._obj, utils.flag(this, 'eventually')).then(function(el) {
         return el.getAttribute(attribute).then(function(actual) {
-          if (typeof value === 'function') {
-            self.assert(typeof actual === 'string', "Expected attribute " + attribute + " of element <" + self._obj + "> to exist", "Expected attribute " + attribute + " of element <" + self._obj + "> to not exist");
-          }
-          else if (typeof value === 'undefined') {
-            self.assert(actual != null, "Expected attribute " + attribute + " of element <" + self._obj + "> to exist, but it does not.", "Expected attribute " + attribute + " of element <" + self._obj + "> to not exist, but it does.");
+           if (utils.flag(self, 'parseNumber')) {
+            actual = parseFloat(actual);
+
+            if (utils.flag(self, 'larger')) {
+              self.assert(actual >= value, 'Expected attribute ' + attribute + ' of element <#{this}> to be larger than #{exp}, but it was #{act}.', 'Expected attribute ' + attribute + ' of element <#{this}> not to be larger than #{exp}, but it was #{act}.', value, actual);
+            }
+            else if (utils.flag(self, 'smaller')) {
+              self.assert(actual <= value, 'Expected attribute ' + attribute + ' of element <#{this}> to be smaller than #{exp}, but it was #{act}.', 'Expected attribute ' + attribute + ' of element <#{this}> not to be smaller than #{exp}, but it was #{act}.', value, actual);
+            }
           }
           else {
-            self.assert(actual === value, "Expected attribute " + attribute + " of element <" + self._obj + "> to be '" + value + "', but it is '" + actual + "'.", "Expected attribute " + attribute + " of element <" + self._obj + "> to not be '" + value + "', but it is.");
+            if (typeof value === 'undefined') {
+              self.assert(typeof actual === 'string', 'Expected attribute ' + attribute + ' of element <#{this}> to exist.', 'Expected attribute ' + attribute + ' of element <#{this}> not to exist.', value, actual);
+            }
+            else {
+              self.assert(actual === value, 'Expected attribute ' + attribute + ' of element <#{this}> to be #{exp}, but it was #{act}.', 'Expected attribute ' + attribute + ' of element <#{this}> not to be #{act}, but it was.', value, actual);
+            }
           }
         });
       });
