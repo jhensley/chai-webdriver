@@ -3,6 +3,7 @@
   "version": "0.14.0",
   "description": "Build more expressive integration tests with some webdriver sugar for chai.js",
   "main": "index.js",
+  "homepage": "https://b3nj4m.github.io/chai-webdriver",
   "scripts": {
     "test": "mocha -R spec spec/*.spec.js",
     "prepublish": "npm run-script build"
@@ -17,7 +18,7 @@
     "integration-tests",
     "chai-plugin"
   ],
-  "author": "Max Edmands",
+  "author": "Ben Robbins <ben.robbins@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/b3nj4m/chai-webdriver/issues"
