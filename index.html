@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Chai-webdriver : Build more expressive integration tests with webdriver sugar for chai.js">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Chai-webdriver</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/b3nj4m/chai-webdriver">View on GitHub</a>
+
+          <h1 id="project_title">Chai-webdriver</h1>
+          <h2 id="project_tagline">Build more expressive integration tests with webdriver sugar for chai.js</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/b3nj4m/chai-webdriver/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/b3nj4m/chai-webdriver/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>Provides <a href="https://npmjs.org/package/selenium-webdriver">selenium-webdriver</a> sugar for the <a href="http://chaijs.com/">Chai</a> assertion library. Allows you to create expressive integration tests:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">expect</span><span class="p">(</span><span class="s1">'.frequency-field'</span><span class="p">).</span><span class="nx">dom</span><span class="p">.</span><span class="nx">to</span><span class="p">.</span><span class="nx">contain</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'One time'</span><span class="p">)</span>
+<span class="nx">expect</span><span class="p">(</span><span class="s1">'.toggle-pane'</span><span class="p">).</span><span class="nx">dom</span><span class="p">.</span><span class="nx">to</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">visible</span><span class="p">()</span>
+</pre></div>
+
+<h2>
+<a name="what-sorts-of-assertions-can-we-make" class="anchor" href="#what-sorts-of-assertions-can-we-make"><span class="octicon octicon-link"></span></a>What sorts of assertions can we make?</h2>
+
+<p>All assertions start with a <a href="http://sizzlejs.com/">Sizzle-compatible css selector</a>, for example:</p>
+
+<ul>
+<li><code>expect('.list')</code></li>
+<li><code>expect('div &gt; h1')</code></li>
+<li><code>expect('a[href=http://google.com]')</code></li>
+</ul><p>Then we add the dom flag, like so:</p>
+
+<ul>
+<li><code>expect(selector).dom</code></li>
+</ul><p>Finally, we can add our assertion to the chain:</p>
+
+<ul>
+<li>
+<code>expect(selector).dom.to.have.text('string')</code> - Test the text value of the dom against supplied string. Exact matches only.</li>
+<li>
+<code>expect(selector).dom.to.contain.text('string')</code> - Test the text value of the dom against supplied string. Partial matches allowed.</li>
+<li>
+<code>expect(selector).dom.to.match(/regex/)</code> - Test the text value of the dom against the regular expression.</li>
+<li>
+<code>expect(selector).dom.to.have.text(/regex/)</code> - Test the text value of the dom against the regular expression. (Same as <code>match</code> above).</li>
+<li>
+<code>expect(selector).dom.to.be.visible()</code> - Check whether or not the element is visible on-screen</li>
+<li>
+<code>expect(selector).dom.to.be.disabled()</code> - Check whether or not the form element is disabled</li>
+<li>
+<code>expect(selector).dom.to.have.count(number)</code> - Test how many elements exist in the dom with the supplied selector</li>
+<li>
+<code>expect(selector).dom.to.have.style('property', 'value')</code> - Test the CSS style of the element (exact string match).</li>
+<li>
+<code>expect(selector).dom.to.have.value('string')</code> - Test the value of a form field against supplied string.</li>
+<li>
+<code>expect(selector).dom.to.have.htmlClass('warning')</code> - Tests that the element has <code>warning</code> as one of its class attributes.</li>
+<li>
+<code>expect(selector).dom.to.have.attribute('attribute', 'value')</code> - Test an element's attribute value. Exact matches only. By omitting <code>value</code> test simply checks for existance of attribute.</li>
+</ul><p>You can also always add a <code>not</code> in there to negate the assertion:</p>
+
+<ul>
+<li><code>expect(selector).dom.not.to.have.style('property', 'value')</code></li>
+</ul><h3>
+<a name="larger-and-smaller" class="anchor" href="#larger-and-smaller"><span class="octicon octicon-link"></span></a>
+<code>larger</code> and <code>smaller</code>
+</h3>
+
+<p>Several of the assertion methods support the <code>larger</code> and <code>smaller</code> properties, which allow numeric comparisons. e.g. for <code>value()</code>:</p>
+
+<ul>
+<li>
+<code>expect('input[type=number]').dom.to.have.larger.value(0)</code> - Test for a numeric value larger (&gt;=) than 0.</li>
+<li>
+<code>expect('input[type=number]').dom.to.have.smaller.value(0)</code> - Test for a numeric value smaller (&lt;=) than 0.</li>
+<li>
+<code>expect('input[type=number]').dom.not.to.have.larger.value(0)</code> - Test for a numeric value not larger (&lt;) than 0.</li>
+<li>
+<code>expect('input[type=number]').dom.not.to.have.smaller.value(0)</code> - Test for a numeric value not smaller (&gt;) than 0.</li>
+</ul><p>Other methods which support <code>larger</code> and <code>smaller</code>:</p>
+
+<ul>
+<li>
+<code>expect(selector).dom.to.have.larger.text(0)</code> - Test for a text with length larger (&gt;=) than 0.</li>
+<li>
+<code>expect(selector).dom.to.have.larger.count(0)</code> - Test for number of elements matching <code>selector</code> larger (&gt;=) than 0.</li>
+<li>
+<code>expect(selector).dom.to.have.larger.style('width', 0)</code> - Test for css <code>width</code> attribute larger (&gt;=) than 0 (ignores units).</li>
+<li>
+<code>expect(selector).dom.to.have.larger.attribute('offsetWidth', 0)</code> - Test for <code>offsetWidth</code> attribute larger (&gt;=) than 0.</li>
+</ul><h3>
+<a name="eventually" class="anchor" href="#eventually"><span class="octicon octicon-link"></span></a><code>eventually</code>
+</h3>
+
+<p>You can also add an <code>eventually</code> to tell <code>chai-webdriver</code> to poll for the selected elements up to the configured timeout (see Setup below):</p>
+
+<ul>
+<li><code>expect(selector).dom.to.eventually.have.htmlClass('warning')</code></li>
+</ul><h3>
+<a name="everything-returns-a-promise" class="anchor" href="#everything-returns-a-promise"><span class="octicon octicon-link"></span></a>Everything returns a promise</h3>
+
+<p>All of these assertions return a <code>Q</code> promise, so you can just return the promise if you're using mocha.</p>
+
+<h2>
+<a name="setup" class="anchor" href="#setup"><span class="octicon octicon-link"></span></a>Setup</h2>
+
+<p>Setup is pretty easy. Just:</p>
+
+<div class="highlight highlight-javascript"><pre>
+<span class="c1">// Start with a webdriver instance:</span>
+<span class="kd">var</span> <span class="nx">sw</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'selenium-webdriver'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">driver</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">sw</span><span class="p">.</span><span class="nx">Builder</span><span class="p">()</span>
+  <span class="p">.</span><span class="nx">withCapabilities</span><span class="p">(</span><span class="nx">sw</span><span class="p">.</span><span class="nx">Capabilities</span><span class="p">.</span><span class="nx">chrome</span><span class="p">())</span>
+  <span class="p">.</span><span class="nx">build</span><span class="p">()</span>
+<span class="kd">var</span> <span class="nx">timeout</span> <span class="o">=</span> <span class="mi">15000</span><span class="p">;</span> <span class="c1">//optional timeout in ms to use with eventually (defaults to 1000)</span>
+
+<span class="c1">// And then...</span>
+<span class="kd">var</span> <span class="nx">chai</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'chai'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">chaiWebdriver</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'chai-webdriver'</span><span class="p">);</span>
+<span class="nx">chai</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">chaiWebdriver</span><span class="p">(</span><span class="nx">driver</span><span class="p">,</span> <span class="nx">timeout</span><span class="p">));</span>
+
+<span class="c1">// And you're good to go!</span>
+<span class="nx">chai</span><span class="p">.</span><span class="nx">describe</span><span class="p">(</span><span class="s1">'kitty test'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">chai</span><span class="p">.</span><span class="nx">before</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">driver</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'http://github.com'</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="nx">done</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">it</span><span class="p">(</span><span class="s1">'should not find a kitty'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">chai</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">'#site-container h1.heading'</span><span class="p">).</span><span class="nx">dom</span><span class="p">.</span><span class="nx">to</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">contain</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"I'm a kitty!"</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>so easy.</p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$EDITOR</span> index.js      <span class="c"># edit index.js</span>
+npm <span class="nb">test</span>              <span class="c"># run the specs</span>
+</pre></div>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>MIT.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Chai-webdriver maintained by <a href="https://github.com/b3nj4m">b3nj4m</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
