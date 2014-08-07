@@ -45,10 +45,10 @@ Several of the assertion methods support the `larger` and `smaller` properties, 
 - `expect('input[type=number]').dom.not.to.have.smaller.value(0)` - Test for a numeric value not smaller (>) than 0.
 
 Other methods which support `larger` and `smaller`:
-- `expect(selector).dom.to.have.larger.text(0)` - Test for a text with length larger (>=) than 0.
+- `expect(selector).dom.to.have.larger.text(0)` - Test for text with length larger (>=) than 0.
 - `expect(selector).dom.to.have.larger.count(0)` - Test for number of elements matching `selector` larger (>=) than 0.
-- `expect(selector).dom.to.have.larger.style('width', 0)` - Test for css `width` attribute larger (>=) than 0 (ignores units).
-- `expect(selector).dom.to.have.larger.attribute('offsetWidth', 0)` - Test for `offsetWidth` attribute larger (>=) than 0.
+- `expect(selector).dom.to.have.larger.style('width', 0)` - Test for css attribute value larger (>=) than 0 (ignores units).
+- `expect(selector).dom.to.have.larger.attribute('offsetWidth', 0)` - Test for attribute value larger (>=) than 0.
 
 
 ### `eventually`
