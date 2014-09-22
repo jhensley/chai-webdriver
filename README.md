@@ -70,7 +70,7 @@ expect('input[type=number]').dom.not.to.have.larger.value(0)
 expect('input[type=number]').dom.not.to.have.smaller.value(0)
 ```
 
-Other methods which support larger and smaller:
+Other methods which support `larger` and `smaller`:
 
 ```javascript
 //Test for text with length larger (>=) than 0.
