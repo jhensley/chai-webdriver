@@ -18,7 +18,7 @@ expect('a[href=http://google.com]')
 Then we add the dom flag, like so:
 
 ```javascript
-expect(selector).dom`
+expect(selector).dom
 ```
 
 Finally, we can add our assertion to the chain:
