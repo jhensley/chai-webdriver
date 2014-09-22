@@ -4,7 +4,6 @@ var seleniumWebdriver = require('selenium-webdriver');
 var sizzle = require('webdriver-sizzle');
 var Q = require('q');
 
-//TODO add styleAbove, styleBelow, attributeAbove, attributeBelow to allow less-than, greater-than comparisons? or just larger/smaller properties?
 //TODO add displayed method which just returns selenium's isDisplayed result
 module.exports = function(driver, timeout) {
   var $ = sizzle(driver);
