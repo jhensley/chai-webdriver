@@ -23,28 +23,58 @@ expect(selector).dom
 
 Finally, we can add our assertion to the chain:
 
+Test the text value of the dom against supplied string. Exact matches only.
 ```javascript
-//Test the text value of the dom against supplied string. Exact matches only.
 expect(selector).dom.to.have.text('string')
-//Test the text value of the dom against supplied string. Partial matches allowed.
+```
+
+Test the text value of the dom against supplied string. Partial matches allowed.
+```javascript
 expect(selector).dom.to.contain.text('string')
-//Test the text value of the dom against the regular expression.
+```
+
+Test the text value of the dom against the regular expression.
+```javascript
 expect(selector).dom.to.match(/regex/)
-//Test the text value of the dom against the regular expression. (Same as `match` above).
+```
+
+Test the text value of the dom against the regular expression. (Same as `match` above).
+```javascript
 expect(selector).dom.to.have.text(/regex/)
-//Check whether or not the element is visible on-screen
+```
+
+Check whether or not the element is visible on-screen
+```javascript
 expect(selector).dom.to.be.visible()
-//Check whether or not the form element is disabled
+```
+
+Check whether or not the form element is disabled
+```javascript
 expect(selector).dom.to.be.disabled()
-//Test how many elements exist in the dom with the supplied selector
+```
+
+Test how many elements exist in the dom with the supplied selector
+```javascript
 expect(selector).dom.to.have.count(number)
-//Test the CSS style of the element (exact string match).
+```
+
+Test the CSS style of the element (exact string match).
+```javascript
 expect(selector).dom.to.have.style('property', 'value')
-//Test the value of a form field against supplied string.
+```
+
+Test the value of a form field against supplied string.
+```javascript
 expect(selector).dom.to.have.value('string')
-//Tests that the element has `warning` as one of its class attributes.
+```
+
+Tests that the element has `warning` as one of its class attributes.
+```javascript
 expect(selector).dom.to.have.htmlClass('warning')
-//Test an element's attribute value. Exact matches only. By omitting `value` test simply checks for existance of attribute.
+```
+
+Test an element's attribute value. Exact matches only. By omitting `value` test simply checks for existance of attribute.
+```javascript
 expect(selector).dom.to.have.attribute('attribute', 'value')
 ```
 
@@ -59,27 +89,45 @@ expect(selector).dom.not.to.have.style('property', 'value')
 
 Several of the assertion methods support the `larger` and `smaller` properties, which allow numeric comparisons. e.g. for `value()`:
 
+Test for a numeric value larger (>=) than 0.
 ```javascript
-//Test for a numeric value larger (>=) than 0.
 expect('input[type=number]').dom.to.have.larger.value(0)
-//Test for a numeric value smaller (<=) than 0.
+```
+
+Test for a numeric value smaller (<=) than 0.
+```javascript
 expect('input[type=number]').dom.to.have.smaller.value(0)
-//Test for a numeric value not larger (<) than 0.
+```
+
+Test for a numeric value not larger (<) than 0.
+```javascript
 expect('input[type=number]').dom.not.to.have.larger.value(0)
-//Test for a numeric value not smaller (>) than 0.
+```
+
+Test for a numeric value not smaller (>) than 0.
+```javascript
 expect('input[type=number]').dom.not.to.have.smaller.value(0)
 ```
 
 Other methods which support `larger` and `smaller`:
 
+Test for text with length larger (>=) than 0.
 ```javascript
-//Test for text with length larger (>=) than 0.
 expect(selector).dom.to.have.larger.text(0)
-//Test for number of elements matching `selector` larger (>=) than 0.
+```
+
+Test for number of elements matching `selector` larger (>=) than 0.
+```javascript
 expect(selector).dom.to.have.larger.count(0)
-//Test for css attribute value larger (>=) than 0 (ignores units).
+```
+
+Test for css attribute value larger (>=) than 0 (ignores units).
+```javascript
 expect(selector).dom.to.have.larger.style('width', 0)
-//Test for attribute value larger (>=) than 0.
+```
+
+Test for attribute value larger (>=) than 0.
+```javascript
 expect(selector).dom.to.have.larger.attribute('offsetWidth', 0)
 ```
 
