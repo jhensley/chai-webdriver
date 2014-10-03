@@ -1,7 +1,7 @@
 var fs = require('fs');
 var string = require('string');
 var seleniumWebdriver = require('selenium-webdriver');
-var sizzle = require('webdriver-sizzle');
+var sizzle = require('webdriver-sizzle-promised');
 var Q = require('q');
 
 //TODO add displayed method which just returns selenium's isDisplayed result
