@@ -134,7 +134,7 @@ expect(selector).dom.to.have.larger.attribute('offsetWidth', 0)
 
 ### eventually
 
-You can also add an `eventually` to tell `chai-webdriver` to poll for the selected elements up to the configured timeout (see Setup below):
+You can also add an `eventually` to tell `chai-webdriver-promised` to poll for the selected elements up to the configured timeout (see Setup below):
 
 ```javascript
 expect(selector).dom.to.eventually.have.htmlClass('warning')
@@ -163,7 +163,7 @@ var timeout = 15000;
 
 // And then...
 var chai = require('chai');
-var chaiWebdriver = require('chai-webdriver');
+var chaiWebdriver = require('chai-webdriver-promised');
 chai.use(chaiWebdriver(driver, timeout));
 
 // And you're good to go!

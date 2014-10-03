@@ -1,6 +1,6 @@
 {
-  "name": "chai-webdriver",
-  "version": "0.14.0",
+  "name": "chai-webdriver-promised",
+  "version": "1.0.0",
   "description": "Build more expressive integration tests with some webdriver sugar for chai.js",
   "main": "index.js",
   "homepage": "https://b3nj4m.github.io/chai-webdriver",
@@ -19,6 +19,9 @@
     "chai-plugin"
   ],
   "author": "Ben Robbins <ben.robbins@gmail.com>",
+  "contributors": [
+    "Max Edmands"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/b3nj4m/chai-webdriver/issues"
@@ -27,7 +30,7 @@
     "q": "~1.0.1",
     "selenium-webdriver": ">=2.39.0",
     "string": "~1.8.0",
-    "webdriver-sizzle": "git+https://git@github.com/b3nj4m/webdriver-sizzle.git#v0.2.1"
+    "webdriver-sizzle-promised": "~1.0.0"
   },
   "devDependencies": {
     "chai": "^1.9.0",
