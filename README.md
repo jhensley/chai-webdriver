@@ -23,61 +23,73 @@ expect(selector).dom
 
 Finally, we can add our assertion to the chain:
 
+### Text
 Test the text value of the dom against supplied string. Exact matches only.
 ```javascript
 expect(selector).dom.to.have.text('string')
 ```
 
+### Text (contain)
 Test the text value of the dom against supplied string. Partial matches allowed.
 ```javascript
 expect(selector).dom.to.contain.text('string')
 ```
 
+### Match
 Test the text value of the dom against the regular expression.
 ```javascript
 expect(selector).dom.to.match(/regex/)
 ```
 
+### Text (regex)
 Test the text value of the dom against the regular expression. (Same as `match` above).
 ```javascript
 expect(selector).dom.to.have.text(/regex/)
 ```
 
+### Visible
 Check whether or not the element is visible on-screen
 ```javascript
 expect(selector).dom.to.be.visible()
 ```
 
+### Disabled
 Check whether or not the form element is disabled
 ```javascript
 expect(selector).dom.to.be.disabled()
 ```
 
+### Count
 Test how many elements exist in the dom with the supplied selector
 ```javascript
 expect(selector).dom.to.have.count(number)
 ```
 
+### Style
 Test the CSS style of the element (exact string match).
 ```javascript
 expect(selector).dom.to.have.style('property', 'value')
 ```
 
+### Value
 Test the value of a form field against supplied string.
 ```javascript
 expect(selector).dom.to.have.value('string')
 ```
 
+### HTML Class
 Tests that the element has `warning` as one of its class attributes.
 ```javascript
 expect(selector).dom.to.have.htmlClass('warning')
 ```
 
+### Attribute
 Test an element's attribute value. Exact matches only. By omitting `value` test simply checks for existance of attribute.
 ```javascript
 expect(selector).dom.to.have.attribute('attribute', 'value')
 ```
 
+### Not
 You can also always add a `not` in there to negate the assertion:
 
 ```javascript
@@ -85,7 +97,7 @@ expect(selector).dom.not.to.have.style('property', 'value')
 ```
 
 
-### larger and smaller
+### Larger and smaller
 
 Several of the assertion methods support the `larger` and `smaller` properties, which allow numeric comparisons. e.g. for `value()`:
 
@@ -132,7 +144,7 @@ expect(selector).dom.to.have.larger.attribute('offsetWidth', 0)
 ```
 
 
-### eventually
+### Eventually
 
 You can also add an `eventually` to tell `chai-webdriver-promised` to poll for the selected elements up to the configured timeout (see Setup below):
 
