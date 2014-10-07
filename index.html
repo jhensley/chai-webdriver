@@ -22,8 +22,8 @@
           <h2 id="project_tagline">Build more expressive integration tests with webdriver sugar for chai.js</h2>
 
             <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/b3nj4m/chai-webdriver/archive/1.0.0.zip">Download 1.0.0 as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/b3nj4m/chai-webdriver/archive/1.0.0.tar.gz">Download 1.0.0 as a tar.gz file</a>
+              <a class="zip_download_link" href="https://github.com/b3nj4m/chai-webdriver/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/b3nj4m/chai-webdriver/tarball/master">Download this project as a tar.gz file</a>
             </section>
         </header>
     </div>
@@ -34,7 +34,7 @@
         <p>Provides <a href="https://npmjs.org/package/selenium-webdriver">selenium-webdriver</a> sugar for the <a href="http://chaijs.com/">Chai</a> assertion library. Allows you to create expressive integration tests:</p>
 
 <div class="highlight highlight-javascript"><pre><span class="nx">expect</span><span class="p">(</span><span class="s1">'.frequency-field'</span><span class="p">).</span><span class="nx">dom</span><span class="p">.</span><span class="nx">to</span><span class="p">.</span><span class="nx">contain</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s1">'One time'</span><span class="p">)</span>
-<span class="nx">expect</span><span class="p">(</span><span class="s1">'.toggle-pane'</span><span class="p">).</span><span class="nx">dom</span><span class="p">.</span><span class="nx">to</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">visible</span><span class="p">()</span>
+<span class="nx">expect</span><span class="p">(</span><span class="s1">'.toggle-pane'</span><span class="p">).</span><span class="nx">dom</span><span class="p">.</span><span class="nx">to</span><span class="p">.</span><span class="nx">eventually</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">visible</span><span class="p">()</span>
 </pre></div>
 
 <h2>
@@ -200,7 +200,7 @@
 <h3>
 <a name="eventually" class="anchor" href="#eventually"><span class="octicon octicon-link"></span></a>Eventually</h3>
 
-<p>You can also add an <code>eventually</code> to tell <code>chai-webdriver</code> to poll for the selected elements up to the configured timeout (see Setup below):</p>
+<p>You can also add an <code>eventually</code> to tell <code>chai-webdriver-promised</code> to poll for the selected elements up to the configured timeout (see Setup below):</p>
 
 <div class="highlight highlight-javascript"><pre><span class="nx">expect</span><span class="p">(</span><span class="nx">selector</span><span class="p">).</span><span class="nx">dom</span><span class="p">.</span><span class="nx">to</span><span class="p">.</span><span class="nx">eventually</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">htmlClass</span><span class="p">(</span><span class="s1">'warning'</span><span class="p">)</span>
 </pre></div>
@@ -227,7 +227,7 @@
 
 <span class="c1">// And then...</span>
 <span class="kd">var</span> <span class="nx">chai</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'chai'</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">chaiWebdriver</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'chai-webdriver'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">chaiWebdriver</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'chai-webdriver-promised'</span><span class="p">);</span>
 <span class="nx">chai</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">chaiWebdriver</span><span class="p">(</span><span class="nx">driver</span><span class="p">,</span> <span class="nx">timeout</span><span class="p">));</span>
 
 <span class="c1">// And you're good to go!</span>
