@@ -2,7 +2,7 @@ Provides [selenium-webdriver](https://npmjs.org/package/selenium-webdriver) suga
 
 ```javascript
 expect('.frequency-field').dom.to.contain.text('One time')
-expect('.toggle-pane').dom.to.not.be.visible()
+expect('.toggle-pane').dom.to.eventually.not.be.visible()
 ```
 
 ## What sorts of assertions can we make?
