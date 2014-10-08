@@ -99,6 +99,20 @@ describe('the basics', function() {
       });
     });
   });
+  describe('#displayed', function() {
+    it('verifies that an element is displayed', function() {
+      return expect('.does-exist:text').dom.to.be.displayed();
+    });
+    it('verifies that a non-existing element is not displayed', function() {
+      return expect('.does-not-exist').dom.not.to.be.displayed();
+    });
+    it('verifies that a hidden element is not displayed', function() {
+      return expect('.exists-but-hidden').dom.not.to.be.displayed();
+    });
+    it('verifies that an off-screen element is displayed', function() {
+      return expect('.exists-but-off-screen').dom.to.be.displayed();
+    });
+  });
   describe('#visible', function() {
     it('verifies that an element is visible', function() {
       return expect('.does-exist:text').dom.to.be.visible();
@@ -108,6 +122,9 @@ describe('the basics', function() {
     });
     it('verifies that a hidden element is not visible', function() {
       return expect('.exists-but-hidden').dom.not.to.be.visible();
+    });
+    it('verifies that an off-screen element is not visible', function() {
+      return expect('.exists-but-off-screen').dom.not.to.be.visible();
     });
   });
   describe('#count', function() {
@@ -286,6 +303,20 @@ describe('the basics with eventually', function() {
       });
     });
   });
+  describe('#displayed', function() {
+    it('verifies that an element is displayed', function() {
+      return expect('.does-exist:text').dom.to.eventually.be.displayed();
+    });
+    it('verifies that a non-existing element is not displayed', function() {
+      return expect('.does-not-exist').dom.not.to.eventually.be.displayed();
+    });
+    it('verifies that a hidden element is not displayed', function() {
+      return expect('.exists-but-hidden').dom.not.to.eventually.be.displayed();
+    });
+    it('verifies that an off-screen element is displayed', function() {
+      return expect('.exists-but-off-screen').dom.to.eventually.be.displayed();
+    });
+  });
   describe('#visible', function() {
     it('verifies that an element is visible', function() {
       return expect('.does-exist:text').dom.to.eventually.be.visible();
@@ -295,6 +326,9 @@ describe('the basics with eventually', function() {
     });
     it('verifies that a hidden element is not visible', function() {
       return expect('.exists-but-hidden').dom.not.to.eventually.be.visible();
+    });
+    it('verifies that an off-screen element is not visible', function() {
+      return expect('.exists-but-off-screen').dom.not.to.eventually.be.visible();
     });
   });
   describe('#count', function() {

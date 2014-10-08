@@ -4,7 +4,6 @@ var seleniumWebdriver = require('selenium-webdriver');
 var sizzle = require('webdriver-sizzle-promised');
 var Q = require('q');
 
-//TODO add displayed method which just returns selenium's isDisplayed result
 module.exports = function(driver, timeout) {
   var $ = sizzle(driver);
 
@@ -123,6 +122,28 @@ module.exports = function(driver, timeout) {
           return _super.call(this, matcher);
         }
       };
+    });
+    chai.Assertion.addMethod('displayed', function() {
+      var self = this;
+
+      if (!utils.flag(this, 'dom')) {
+        throw new Error('Can only test display of dom elements');
+      }
+
+      var assert = function(condition) {
+        self.assert(condition, 'Expected #{this} to be displayed but it is not', 'Expected #{this} to not be displayed but it is');
+      };
+
+      return assertElementExists(self._obj, utils.flag(self, 'eventually')).then(function(el) {
+        return el.isDisplayed().then(function(displayed) {
+          return assert(displayed);
+        });
+      }, function(err) {
+        if (utils.flag(self, 'negate')) {
+          return assert(false);
+        }
+        throw err;
+      });
     });
     chai.Assertion.addMethod('visible', function() {
       var self = this;

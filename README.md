@@ -47,6 +47,12 @@ Test the text value of the dom against the regular expression. (Same as `match` 
 expect(selector).dom.to.have.text(/regex/)
 ```
 
+### Displayed
+Check whether or not the element is displayed (can be scrolled off-screen)
+```javascript
+expect(selector).dom.to.be.displayed()
+```
+
 ### Visible
 Check whether or not the element is visible on-screen
 ```javascript
