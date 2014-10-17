@@ -30,7 +30,7 @@
     "q": "~1.0.1",
     "selenium-webdriver": ">=2.39.0",
     "string": "~1.8.0",
-    "webdriver-sizzle-promised": "~1.0.0"
+    "webdriver-sizzle-promised": "~2.0.0"
   },
   "devDependencies": {
     "chai": "^1.9.0",
