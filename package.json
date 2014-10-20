@@ -5,8 +5,7 @@
   "main": "index.js",
   "homepage": "https://b3nj4m.github.io/chai-webdriver",
   "scripts": {
-    "test": "mocha -R spec spec/*.spec.js",
-    "prepublish": "npm run-script build"
+    "test": "mocha -R spec spec/*.spec.js"
   },
   "repository": {
     "type": "git",
