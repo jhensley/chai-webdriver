@@ -1,5 +1,4 @@
 var fs = require('fs');
-var string = require('string');
 var seleniumWebdriver = require('selenium-webdriver');
 var sizzle = require('webdriver-sizzle-promised');
 var Q = require('q');

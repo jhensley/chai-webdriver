@@ -1,6 +1,6 @@
 {
   "name": "chai-webdriver-promised",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "Build more expressive integration tests with some webdriver sugar for chai.js",
   "main": "index.js",
   "homepage": "https://b3nj4m.github.io/chai-webdriver",
@@ -28,7 +28,6 @@
   "dependencies": {
     "q": "~1.0.1",
     "selenium-webdriver": ">=2.39.0",
-    "string": "~1.8.0",
     "webdriver-sizzle-promised": "~2.0.0"
   },
   "devDependencies": {
