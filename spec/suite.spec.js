@@ -10,7 +10,7 @@ webdriver.logging = {
 
 var driver = new webdriver.Builder().withCapabilities(webdriver.Capabilities.phantomjs()).build();
 
-chai.use(chaiWebdriver(driver));
+chai.use(chaiWebdriver(driver, 100));
 
 var expect = chai.expect;
 
