@@ -1,6 +1,6 @@
 {
   "name": "chai-webdriver-promised",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Build more expressive integration tests with some webdriver sugar for chai.js",
   "main": "index.js",
   "homepage": "https://b3nj4m.github.io/chai-webdriver",
