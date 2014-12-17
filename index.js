@@ -140,7 +140,7 @@ module.exports = function(driver, timeout, interval) {
         return assertElementExists(self._obj).then(function(el) {
           var window = driver.manage().window();
 
-          return Q.all([el.isDisplayed(), el.getSize(), el.getLocation(), window.getSize()]).spread(function(displayed, size, loc, winSize) {
+          return Q.all([el.isDisplayed(), el.getSize(), el.getLocation(), promise(window.getSize())]).spread(function(displayed, size, loc, winSize) {
             //selenium may say it's displayed even though it's off-screen
             return assert(displayed && loc.x > -size.width && loc.y > -size.height && loc.y < winSize.height && loc.x < winSize.width);
           });
