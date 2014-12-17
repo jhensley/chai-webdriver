@@ -35,7 +35,9 @@
   },
   "devDependencies": {
     "phantomjs": "^1.9.7-1",
-    "mocha": "~2.0.1"
+    "mocha": "~2.0.1",
+    "chai": "~1.10.0",
+    "selenium-webdriver": "~2.44.0"
   },
   "engines": {
     "node": ">=0.10.0"
