@@ -26,8 +26,8 @@
     "url": "https://github.com/b3nj4m/chai-webdriver/issues"
   },
   "peerDependencies": {
-    "selenium-webdriver": "~2.44.0",
-    "chai": "~1.10.0"
+    "selenium-webdriver": "2.x",
+    "chai": "1.x"
   },
   "dependencies": {
     "q": "~1.1.2",
