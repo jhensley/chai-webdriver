@@ -138,20 +138,11 @@ module.exports = function(driver, timeout, interval) {
 
       return retry(utils.flag(self, 'eventually'), function() {
         return assertElementExists(self._obj).then(function(el) {
-          return el.isDisplayed().then(function(visible) {
-            //selenium may say it's visible even though it's off-screen
-            if (visible) {
-              return promise(driver.manage().window().getSize()).then(function(winSize) {
-                return el.getSize().then(function(size) {
-                  return el.getLocation().then(function(loc) {
-                    return assert(loc.x > -size.width && loc.y > -size.height && loc.y < winSize.height && loc.x < winSize.width);
-                  });
-                });
-              });
-            }
-            else {
-              return assert(visible);
-            }
+          var window = driver.manage().window();
+
+          return Q.all([el.isDisplayed(), el.getSize(), el.getLocation(), window.getSize()]).spread(function(displayed, size, loc, winSize) {
+            //selenium may say it's displayed even though it's off-screen
+            return assert(displayed && loc.x > -size.width && loc.y > -size.height && loc.y < winSize.height && loc.x < winSize.width);
           });
         }, function(err) {
           if (utils.flag(self, 'negate')) {
