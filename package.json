@@ -27,7 +27,7 @@
   },
   "peerDependencies": {
     "selenium-webdriver": "2.x",
-    "chai": "1.x"
+    "chai": "2.x"
   },
   "dependencies": {
     "q": "~1.1.2",
