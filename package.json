@@ -1,5 +1,5 @@
 {
-  "name": "chai-webdriver-promised",
+  "name": "chai2.0-webdriver-promised",
   "version": "4.0.3",
   "description": "Build more expressive integration tests with some webdriver sugar for chai.js",
   "main": "index.js",
